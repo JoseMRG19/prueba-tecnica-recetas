@@ -24,10 +24,9 @@
 body {
   margin: 0;
   font-family: var(--font-family);
-  background-color: var(--color-background);
+  background-color: #f7f7f7; /* <-- CAMBIO: Un gris muy claro y elegante */
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
-  /* CAMBIO: Asegurarse que NO haya display: flex ni place-items en body para que #root maneje el centrado */
 }
 
 #root {

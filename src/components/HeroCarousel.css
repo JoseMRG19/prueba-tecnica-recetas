@@ -1,0 +1,106 @@
+/* Wrapper principal para darle un margen si es necesario */
+.hero-carousel-wrapper {
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-md);
+}
+
+.presentation-mode .slide-container {
+  position: relative;
+  height: 400px; /* Altura del carrusel */
+}
+
+.presentation-mode .slide-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+   object-position: center 30%; 
+}
+
+/* El cuadro de información superpuesto */
+.legend-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 40%;
+  max-width: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.legend-content {
+  background-color: rgba(247, 247, 247, 0.9); /* Fondo semi-transparente */
+  backdrop-filter: blur(5px); /* Efecto de desenfoque del fondo */
+  padding: 2.5rem;
+  border-radius: var(--border-radius);
+  color: var(--color-text-primary);
+  text-align: center;
+  margin-right: 2rem;
+}
+
+.legend-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+}
+
+.legend-content p {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.legend-button {
+  display: inline-block;
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.8rem 2rem;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+
+.legend-button:hover {
+  background-color: var(--color-primary-dark);
+}
+
+/* Estilos para los controles del carrusel (flechas y puntos) */
+.carousel .control-dots .dot {
+  background: var(--color-primary) !important;
+  box-shadow: none !important;
+}
+
+.carousel .control-arrow {
+  background: rgba(0, 0, 0, 0.3) !important;
+  height: 50px;
+  width: 50px;
+  top: 50% !important;
+  margin-top: -25px;
+  border-radius: 50%;
+}
+
+/* Adaptativo para móviles */
+@media (max-width: 768px) {
+  .presentation-mode .slide-container {
+    height: 350px;
+  }
+  .legend-overlay {
+    width: 100%;
+    max-width: none;
+    bottom: auto; /* El overlay se posiciona arriba */
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+  }
+  .legend-content {
+    background: none;
+    backdrop-filter: none;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    margin: 0;
+    padding: 2rem 1.5rem;
+  }
+  .legend-content p {
+    color: #f0f0f0;
+  }
+}

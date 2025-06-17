@@ -1,35 +1,46 @@
+/* Contenedor principal que permite que la barra sea "pegajosa" (sticky) */
 .header-wrapper {
   position: sticky;
   top: 0;
   z-index: 1000;
+  width: 100%; /* Asegura que ocupe todo el ancho */
 }
 
+/* La barra de navegación principal con el fondo verde */
 .main-header {
-  background-color: var(--color-primary); /* Fondo verde */
+  background-color: var(--color-primary);
   padding: 1rem 0;
-  color: white; /* Texto blanco por defecto */
+  color: white;
 }
 
+/* El contenedor interno que centra el contenido de la barra */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
+  width: 100%;
+  max-width: 1100px; /* Coincide con el .container global */
+  margin: 0 auto; /* Centra este contenedor */
+  padding: 0 1rem; /* Espaciado lateral */
 }
 
+/* Logo "MiRecetario" */
 .nav-logo {
   font-size: 1.6rem;
   font-weight: 800;
-  color: white; /* Logo blanco */
+  color: white;
   text-decoration: none;
-  flex-shrink: 0;
+  flex-shrink: 0; /* Evita que se encoja si no hay espacio */
 }
 
+/* Contenedor de la barra de búsqueda */
 .search-wrapper {
   width: 100%;
   max-width: 450px;
 }
 
+/* Botón de "Categorías" */
 .menu-toggle {
   background-color: white;
   border: 1px solid white;
@@ -45,14 +56,19 @@
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
+
 .menu-toggle:hover {
   background-color: #f8f8f8;
 }
+
 .menu-toggle svg {
   font-size: 1.1rem;
 }
 
+
 /* --- ESTILOS PARA LA ANIMACIÓN DEL MEGAMENÚ --- */
+
+/* El contenedor que posiciona el menú desplegable */
 .mega-menu-container {
   position: absolute;
   top: 100%;
@@ -60,9 +76,10 @@
   right: 0;
   display: flex;
   justify-content: center;
-  perspective: 1000px;
+  padding: 0 1rem; /* Asegura que el menú no se pegue a los bordes en pantallas pequeñas */
 }
 
+/* Nombres de clase para la animación con CSSTransition */
 .mega-menu-enter {
   opacity: 0;
   transform: translateY(-10px);
@@ -70,9 +87,8 @@
 .mega-menu-enter-active {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
 }
-
 .mega-menu-exit {
   opacity: 1;
   transform: translateY(0);
@@ -80,5 +96,5 @@
 .mega-menu-exit-active {
   opacity: 0;
   transform: translateY(-10px);
-  transition: opacity 300ms, transform 300ms;
+  transition: opacity 300ms ease-in, transform 300ms ease-in;
 }
