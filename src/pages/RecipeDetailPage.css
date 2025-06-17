@@ -1,0 +1,101 @@
+/* Reemplazar todo en src/pages/RecipeDetailPage.css */
+
+.recipe-detail-page {
+  padding: 2rem 0 4rem; /* Espaciado vertical */
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+.back-link:hover {
+  color: var(--color-primary);
+}
+
+.recipe-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.recipe-header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 1rem;
+  color: var(--color-text-primary);
+}
+
+.meta-tag {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  margin: 0 0.5rem;
+}
+
+/* ¡La clave del layout de dos columnas! */
+.recipe-main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+}
+
+.recipe-media .recipe-image,
+.video-responsive {
+  width: 100%;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+}
+
+.video-responsive {
+  overflow: hidden;
+  padding-bottom: 56.25%;
+  position: relative;
+  height: 0;
+}
+.video-responsive iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.ingredients-section h2,
+.instructions-section h2 {
+  font-size: 1.8rem;
+  border-bottom: 3px solid var(--color-primary);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.ingredients-list {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.ingredients-list li {
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.instructions-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  white-space: pre-wrap; /* Respeta los saltos de línea */
+}
+
+/* Adaptativo */
+@media (max-width: 992px) {
+  .recipe-main-content {
+    grid-template-columns: 1fr; /* Se apilan en pantallas medianas */
+  }
+}

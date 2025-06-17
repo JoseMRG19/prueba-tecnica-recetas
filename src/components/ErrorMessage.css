@@ -1,0 +1,21 @@
+/* src/components/ErrorMessage.css */
+
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  margin: 1rem auto;
+  border: 1px solid #e74c3c;
+  border-radius: var(--border-radius);
+  background-color: #fbeae5;
+  max-width: 800px;
+}
+
+.error-text {
+  color: #c0392b;
+  font-weight: 500;
+  font-size: 1.1rem;
+  text-align: center;
+  margin: 0;
+}
