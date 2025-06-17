@@ -15,4 +15,4 @@ const ErrorMessage = ({ message }) => {
 };
 
 // La línea que soluciona el error:
-export default ErrorMessage; 
+export default ErrorMessage;

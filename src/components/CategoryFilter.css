@@ -1,31 +1,40 @@
 .category-filter-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
   gap: 1rem;
-  margin-top: 2.5rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap; /* Permite que los botones se envuelvan a la siguiente línea en pantallas pequeñas */
 }
 
 .filter-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
   font-family: var(--font-family);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
-  border-radius: 50px;
-  border: 1px solid var(--color-border);
-  background-color: var(--color-surface);
+  padding: 1rem;
+  min-width: 100px;
+  border-radius: var(--border-radius);
+  border: 2px solid transparent; /* Borde transparente por defecto */
+  background-color: transparent;
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .filter-button:hover {
-  border-color: var(--color-primary-dark);
-  color: var(--color-text-primary);
+  color: var(--color-primary);
 }
 
 .filter-button.active {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-  color: white;
+  color: var(--color-primary);
+  border-color: var(--color-primary); /* Borde primario cuando está activo */
+  background-color: var(--color-surface); /* Fondo blanco cuando está activo */
+  box-shadow: var(--shadow-sm); /* Sombra ligera para el activo */
+}
+
+.filter-button svg {
+  font-size: 1.8rem;
 }

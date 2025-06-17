@@ -43,8 +43,15 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 3rem;
-  align-items: flex-start;
+  align-items: flex-start; /* Alinea los elementos en la parte superior */
   margin-bottom: 3rem;
+}
+
+/* Responsividad para layout de una columna en pantallas pequeñas */
+@media (max-width: 768px) {
+  .recipe-main-content {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
 }
 
 .recipe-media .recipe-image,
@@ -56,7 +63,7 @@
 
 .video-responsive {
   overflow: hidden;
-  padding-bottom: 56.25%;
+  padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
   position: relative;
   height: 0;
 }
@@ -70,32 +77,46 @@
 
 .ingredients-section h2,
 .instructions-section h2 {
+  color: var(--color-text-primary);
   font-size: 1.8rem;
-  border-bottom: 3px solid var(--color-primary);
-  padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
-  display: inline-block;
 }
 
 .ingredients-list {
-  list-style-type: none;
-  padding-left: 0;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 2rem;
 }
 
 .ingredients-list li {
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ingredients-list li::before {
+  content: '🌿'; /* Un pequeño ícono decorativo */
+  font-size: 1.2em;
 }
 
 .instructions-text {
-  font-size: 1.1rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
   line-height: 1.8;
-  white-space: pre-wrap; /* Respeta los saltos de línea */
+  white-space: pre-wrap; /* Para respetar los saltos de línea del texto de la API */
+  text-align: left; /* Alineación de texto a la izquierda para mejor lectura */
 }
 
-/* Adaptativo */
-@media (max-width: 992px) {
-  .recipe-main-content {
-    grid-template-columns: 1fr; /* Se apilan en pantallas medianas */
-  }
+.recipe-source {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
 }

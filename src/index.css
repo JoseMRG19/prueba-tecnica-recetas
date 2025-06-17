@@ -24,11 +24,13 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  /* CAMBIO: Eliminadas propiedades de display/place-items para centrado del body */
+  font-family: var(--font-family);
+  background-color: var(--color-background); /* Usar variable de globals.css */
+  color: var(--color-text-primary); /* Usar variable de globals.css */
+  -webkit-font-smoothing: antialiased;
 }
+
 
 h1 {
   font-size: 3.2em;
@@ -65,4 +67,11 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#root {
+  max-width: 1280px; /* Ancho máximo para el contenedor principal de la app */
+  margin: 0 auto;    /* Centra #root horizontalmente en el body */
+  padding: 2rem;     /* Espacio interno general de #root */
+  /* CAMBIO: Eliminada la línea 'text-align: center;' para que no afecte todo el contenido */
 }

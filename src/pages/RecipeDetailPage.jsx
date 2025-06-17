@@ -36,49 +36,63 @@ const RecipeDetailPage = () => {
   // Función para procesar los ingredientes
   const getIngredients = (recipeData) => {
     const ingredients = [];
+    // Las propiedades de ingredientes y medidas van hasta el 20
     for (let i = 1; i <= 20; i++) {
       const ingredient = recipeData[`strIngredient${i}`];
       const measure = recipeData[`strMeasure${i}`];
-      if (ingredient) {
-        ingredients.push(`${measure} ${ingredient}`);
+
+      // Si el ingrediente existe y no está vacío, lo añadimos
+      if (ingredient && ingredient.trim() !== "") {
+        ingredients.push(`${measure ? measure.trim() + " " : ""}${ingredient.trim()}`);
       }
     }
     return ingredients;
   };
 
-  if (loading) return <LoadingSpinner />;
-  if (error) return <ErrorMessage message={error} />;
-  if (!recipe) return <p>Receta no encontrada.</p>;
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (!recipe) {
+    return <ErrorMessage message="No se pudo cargar la receta." />;
+  }
+
+  // Extraer ingredientes y video de YouTube
   const ingredients = getIngredients(recipe);
-  
-  // Extraer el ID de un video de YouTube si existe
   const youtubeVideoId = recipe.strYoutube ? recipe.strYoutube.split('v=')[1] : null;
 
-
   return (
-    <div className="recipe-detail-page">
-      <Link to="/" className="back-link">← Volver a la búsqueda</Link>
-      <h1>{recipe.strMeal}</h1>
-      <div className="recipe-meta">
-        <span><strong>Categoría:</strong> {recipe.strCategory}</span>
-        <span><strong>Área:</strong> {recipe.strArea}</span>
+    <div className="container recipe-detail-page">
+      <Link to="/" className="back-link">
+        &larr; Volver a la lista de recetas
+      </Link>
+
+      <div className="recipe-header">
+        <h1>{recipe.strMeal}</h1>
+        <div className="meta-info">
+          {recipe.strCategory && <span className="meta-tag">{recipe.strCategory}</span>}
+          {recipe.strArea && <span className="meta-tag">{recipe.strArea}</span>}
+        </div>
       </div>
       
-      <div className="recipe-content">
+      <div className="recipe-main-content"> {/* Contenedor para layout de dos columnas */}
         <div className="recipe-media">
           {youtubeVideoId ? (
-            <iframe
-              width="560"
-              height="315"
-              src={`https://www.youtube.com/embed/${youtubeVideoId}`}
-              title={recipe.strMeal}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen>
-            </iframe>
+            <div className="video-responsive">
+              <iframe
+                src={`https://www.youtube.com/embed/${youtubeVideoId}`}
+                title={recipe.strMeal}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen>
+              </iframe>
+            </div>
           ) : (
-            <img src={recipe.strMealThumb} alt={recipe.strMeal} />
+            <img src={recipe.strMealThumb} alt={recipe.strMeal} className="recipe-image" />
           )}
         </div>
         
@@ -102,6 +116,12 @@ const RecipeDetailPage = () => {
           </p>
         </div>
       </div>
+
+      {recipe.strSource && (
+        <p className="recipe-source">
+          Fuente: <a href={recipe.strSource} target="_blank" rel="noopener noreferrer">{recipe.strSource}</a>
+        </p>
+      )}
     </div>
   );
 };

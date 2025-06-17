@@ -1,32 +1,31 @@
-/* src/components/SearchBar.css */
-
 .search-bar-container {
-  margin: 1.5rem 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
+  position: relative;
 }
 
 .search-input {
   width: 100%;
-  max-width: 500px;
-  padding: 0.8rem 1.5rem;
-  font-size: 1rem;
-  font-family: var(--font-family);
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
+  font-size: 0.9rem;
   border-radius: 50px;
   border: 1px solid var(--color-border);
-  background-color: var(--color-surface);
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.2s, border-color 0.2s;
+  background-color: #f7f7f7;
+  
+  /* --- LÍNEA CLAVE AÑADIDA --- */
+  color: var(--color-text-primary); /* Usa el color de texto principal (gris oscuro) */
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+  background-color: white;
 }
 
-.search-input::placeholder {
-  color: var(--color-text-secondary);
+/* Icono de Lupa */
+.search-bar-container::before {
+  content: '🔍';
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.6;
 }

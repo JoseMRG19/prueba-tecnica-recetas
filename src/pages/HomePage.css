@@ -1,27 +1,43 @@
-.home-header {
+/* Contenedor principal de la página con padding */
+.page-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra los elementos flexibles como SearchBar */
+  padding-top: 3rem;
+  padding-bottom: 4rem;
+}
+
+/* Título principal de la página */
+.main-title {
   text-align: center;
-  padding: 5rem 1rem;
-  width: 100%;
-}
-
-.home-header h1 {
-  font-size: 3rem;
-  font-weight: 700;
+  font-size: 2.8rem;
+  font-weight: 800;
   color: var(--color-text-primary);
-  margin-bottom: 1rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 0.5rem;
 }
 
-.home-header p {
+.main-subtitle {
+  text-align: center;
   font-size: 1.1rem;
   color: var(--color-text-secondary);
-  max-width: 550px;
-  margin: 0 auto 2.5rem auto;
+  margin-bottom: 2rem;
 }
 
-main {
-  width: 100%;
-  padding-bottom: 5rem;
+/* Estilos para el grid de recetas */
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  width: 100%; /* Ocupa todo el ancho disponible en el contenedor */
+  max-width: 1100px; /* Asegura que no se extienda demasiado */
+  margin-top: 3rem; /* Espacio superior para separarlo de los filtros/búsqueda */
+}
+
+/* Mensaje cuando no hay resultados */
+.no-results-message {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 1.2rem;
+  margin-top: 2rem;
+  grid-column: 1 / -1; /* Para que el mensaje ocupe todo el ancho del grid */
 }

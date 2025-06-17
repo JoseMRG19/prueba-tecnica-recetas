@@ -6,16 +6,20 @@
   align-items: center;
   padding: 2rem;
   margin: 1rem auto;
-  border: 1px solid #e74c3c;
+  border: 1px solid #e74c3c; /* Color de borde rojo de advertencia */
   border-radius: var(--border-radius);
-  background-color: #fbeae5;
+  background-color: #fbeae5; /* Fondo más claro para el error */
   max-width: 800px;
+  box-shadow: var(--shadow-sm); /* Sombra sutil */
 }
 
 .error-text {
-  color: #c0392b;
+  color: #c0392b; /* Texto en un tono de rojo más oscuro */
   font-weight: 500;
   font-size: 1.1rem;
   text-align: center;
   margin: 0;
+  display: flex; /* Para alinear el icono y el texto */
+  align-items: center;
+  gap: 0.8rem; /* Espacio entre el icono y el texto */
 }
