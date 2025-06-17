@@ -1,82 +1,73 @@
-const API_URL = "https://www.themealdb.com/api/json/v1/1";
+// --- CORRECCIÓN CLAVE ---
+// La URL base ahora debe coincidir con el prefijo que definimos en el proxy de Vite.
+const BASE_URL = "/api-proxy/json/v1/1";
 
 /**
- * Función genérica para realizar peticiones a la API.
- * Maneja respuestas de 'meals' y 'categories', y errores de red.
- * @param {string} endpoint - El endpoint de la API a consultar.
- * @returns {Promise<Array>} - Una promesa que resuelve a un array de resultados.
+ * Función genérica y robusta para peticiones a través del proxy.
  */
-const fetchAPI = async (endpoint) => {
+const fetchFromApi = async (endpoint) => {
   try {
-    const response = await fetch(`${API_URL}/${endpoint}`);
+    const response = await fetch(`${BASE_URL}/${endpoint}`);
     if (!response.ok) {
-      throw new Error(`Error de red: ${response.status}`);
+      throw new Error(`Error de red o del servidor: ${response.status}`);
     }
     const data = await response.json();
-    return data.meals || data.categories || [];
+    return data; // Devolvemos el objeto completo para que cada función lo procese
   } catch (error) {
-    console.error(`Error al obtener datos del endpoint ${endpoint}:`, error);
+    console.error(`Error en fetchFromApi para ${endpoint}:`, error);
     throw error;
   }
 };
 
-// --- FUNCIONES EXPORTADAS PRINCIPALES ---
+// --- FUNCIONES EXPORTADAS ---
 
-export const getCategories = () => fetchAPI('categories.php');
+export const getCategories = async () => {
+  const data = await fetchFromApi('categories.php');
+  // La respuesta real es { categories: [...] }, así que la extraemos aquí.
+  return data.categories || [];
+};
 
-export const getRecipesByCategory = (categoryName) => fetchAPI(`filter.php?c=${categoryName}`);
+export const getRecipesByCategory = async (categoryName) => {
+  const data = await fetchFromApi(`filter.php?c=${categoryName}`);
+  return data.meals || [];
+};
 
-export const searchRecipeByName = (name) => fetchAPI(`search.php?s=${name}`);
+export const searchRecipeByName = async (name) => {
+  const data = await fetchFromApi(`search.php?s=${name}`);
+  return data.meals || [];
+};
 
 export const getRecipeById = async (id) => {
-  const meals = await fetchAPI(`lookup.php?i=${id}`);
-  return meals[0] || null;
+  const data = await fetchFromApi(`lookup.php?i=${id}`);
+  return data.meals ? data.meals[0] : null;
 };
 
 export const getFeaturedRecipes = async () => {
   const featuredCategories = ['Seafood', 'Chicken', 'Beef', 'Pasta', 'Dessert', 'Vegetarian'];
   
-  const promises = featuredCategories.map(category => 
-    fetch(`${API_URL}/filter.php?c=${category}`).then(res => res.json())
-  );
+  // Cada llamada ahora usa la función genérica que pasa por el proxy
+  const promises = featuredCategories.map(category => getRecipesByCategory(category));
   
   try {
     const results = await Promise.all(promises);
-    const allMeals = results.flatMap(result => result.meals || []);
-    // Tomamos una muestra y la mezclamos para un resultado más variado y rápido de cargar
-    return allMeals.sort(() => 0.5 - Math.random()).slice(0, 24); 
+    const allMeals = results.flatMap(result => result || []); // Aplanamos los arrays
+    return allMeals.sort(() => 0.5 - Math.random()).slice(0, 24);
   } catch (error) {
     console.error("Error al obtener las recetas destacadas:", error);
     return [];
   }
 };
 
-
-// --- NUEVA FUNCIÓN DE AYUDA AVANZADA ---
-
-/**
- * Dado un array de recetas básicas (con solo id, nombre e imagen),
- * obtiene los detalles completos de cada una (incluyendo área, categoría, etc.).
- * Esto es necesario para mostrar información enriquecida en las tarjetas de la HomePage.
- * @param {Array} basicRecipes - Array de recetas básicas.
- * @returns {Promise<Array>} - Un array de recetas con todos sus detalles.
- */
 export const getFullRecipesDetails = async (basicRecipes) => {
-  if (!basicRecipes || basicRecipes.length === 0) {
-    return [];
-  }
+  if (!basicRecipes || basicRecipes.length === 0) return [];
   
-  // Creamos un array de promesas, una por cada receta, para llamar a getRecipeById
   const detailPromises = basicRecipes.map(recipe => getRecipeById(recipe.idMeal));
   
   try {
-    // Esperamos a que todas las promesas se resuelvan
     const fullRecipes = await Promise.all(detailPromises);
-    
-    // Filtramos cualquier resultado nulo que pueda haber ocurrido si una receta falló
     return fullRecipes.filter(recipe => recipe !== null);
   } catch (error) {
-    console.error("Error al obtener los detalles completos de las recetas:", error);
-    return []; // Devolvemos un array vacío en caso de error
+    console.error("Error al obtener los detalles completos:", error);
+    return [];
   }
 };

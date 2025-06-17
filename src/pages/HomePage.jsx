@@ -40,40 +40,44 @@ const HomePage = () => {
   }, [urlCategory]);
 
   // Efecto principal para obtener los datos enriquecidos de las recetas
-  useEffect(() => {
-    const fetchFullRecipes = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        let basicData;
-        if (debouncedSearchTerm) {
-          basicData = await searchRecipeByName(debouncedSearchTerm);
+ useEffect(() => {
+  const fetchFullRecipes = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      let basicData;
+      if (debouncedSearchTerm) {
+        basicData = await searchRecipeByName(debouncedSearchTerm);
+      } else {
+        if (activeCategory === 'All') {
+          basicData = await getFeaturedRecipes();
         } else {
-          if (activeCategory === 'All') {
-            basicData = await getFeaturedRecipes();
-          } else {
-            basicData = await getRecipesByCategory(activeCategory);
-          }
+          basicData = await getRecipesByCategory(activeCategory);
         }
-
-        // --- LÓGICA CLAVE ACTUALIZADA ---
-        // Si obtuvimos resultados, ahora buscamos sus detalles completos
-        if (basicData && basicData.length > 0) {
-          const fullData = await getFullRecipesDetails(basicData);
-          setRecipes(fullData);
-        } else {
-          setRecipes([]); // No hay resultados, establecemos un array vacío
-        }
-
-      } catch (err) {
-        setError("Lo sentimos, no pudimos cargar las recetas. Inténtalo de nuevo.");
-      } finally {
-        setLoading(false);
       }
-    };
-    
-    fetchFullRecipes();
-  }, [activeCategory, debouncedSearchTerm]);
+
+      if (basicData && basicData.length > 0) {
+        // --- OPTIMIZACIÓN CLAVE ---
+        // Tomamos solo una porción de la lista básica (ej: las primeras 12)
+        // antes de pedir los detalles completos.
+        const sampleData = basicData.slice(0, 12);
+        
+        const fullData = await getFullRecipesDetails(sampleData);
+        setRecipes(fullData);
+      } else {
+        setRecipes([]);
+      }
+
+    } catch (err) {
+      // El mensaje de error que ya tienes es perfecto para este caso
+      setError("Lo sentimos, un error ocurrió al cargar las recetas. Inténtalo de nuevo.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  fetchFullRecipes();
+}, [activeCategory, debouncedSearchTerm]);
 
   // Función para manejar el cambio de categoría desde los filtros
   const handleCategoryChange = (newCategory) => {
