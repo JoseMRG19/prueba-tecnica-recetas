@@ -16,11 +16,11 @@ const fetchAPI = async (endpoint) => {
     return data.meals || data.categories || [];
   } catch (error) {
     console.error(`Error al obtener datos del endpoint ${endpoint}:`, error);
-    throw error; // Propaga el error para que el componente que llama pueda manejarlo.
+    throw error;
   }
 };
 
-// --- FUNCIONES EXPORTADAS ---
+// --- FUNCIONES EXPORTADAS PRINCIPALES ---
 
 export const getCategories = () => fetchAPI('categories.php');
 
@@ -30,37 +30,53 @@ export const searchRecipeByName = (name) => fetchAPI(`search.php?s=${name}`);
 
 export const getRecipeById = async (id) => {
   const meals = await fetchAPI(`lookup.php?i=${id}`);
-  // La API devuelve un array con un solo elemento. Lo extraemos.
-  // Si el array está vacío, meals[0] será undefined, y '|| null' lo convertirá en null.
   return meals[0] || null;
 };
 
-/**
- * NUEVA FUNCIÓN: Obtiene una selección variada de recetas de categorías populares.
- * Simula una vista de "Todas las recetas" ya que la API no tiene un endpoint para ello.
- * @returns {Promise<Array>} - Una promesa que resuelve a un array de recetas mezcladas.
- */
 export const getFeaturedRecipes = async () => {
-  // Lista de categorías populares para una muestra variada.
   const featuredCategories = ['Seafood', 'Chicken', 'Beef', 'Pasta', 'Dessert', 'Vegetarian'];
   
-  // Creamos un array de promesas, una por cada petición a la API.
   const promises = featuredCategories.map(category => 
     fetch(`${API_URL}/filter.php?c=${category}`).then(res => res.json())
   );
   
   try {
-    // Ejecutamos todas las promesas en paralelo para máxima eficiencia.
     const results = await Promise.all(promises);
-    
-    // Unimos los resultados de todas las llamadas en un solo array plano.
     const allMeals = results.flatMap(result => result.meals || []);
-
-    // Mezclamos el array para que la presentación sea más interesante y no agrupada por categoría.
-    return allMeals.sort(() => 0.5 - Math.random());
-    
+    // Tomamos una muestra y la mezclamos para un resultado más variado y rápido de cargar
+    return allMeals.sort(() => 0.5 - Math.random()).slice(0, 24); 
   } catch (error) {
     console.error("Error al obtener las recetas destacadas:", error);
-    return []; // En caso de error, devuelve un array vacío para no romper la UI.
+    return [];
+  }
+};
+
+
+// --- NUEVA FUNCIÓN DE AYUDA AVANZADA ---
+
+/**
+ * Dado un array de recetas básicas (con solo id, nombre e imagen),
+ * obtiene los detalles completos de cada una (incluyendo área, categoría, etc.).
+ * Esto es necesario para mostrar información enriquecida en las tarjetas de la HomePage.
+ * @param {Array} basicRecipes - Array de recetas básicas.
+ * @returns {Promise<Array>} - Un array de recetas con todos sus detalles.
+ */
+export const getFullRecipesDetails = async (basicRecipes) => {
+  if (!basicRecipes || basicRecipes.length === 0) {
+    return [];
+  }
+  
+  // Creamos un array de promesas, una por cada receta, para llamar a getRecipeById
+  const detailPromises = basicRecipes.map(recipe => getRecipeById(recipe.idMeal));
+  
+  try {
+    // Esperamos a que todas las promesas se resuelvan
+    const fullRecipes = await Promise.all(detailPromises);
+    
+    // Filtramos cualquier resultado nulo que pueda haber ocurrido si una receta falló
+    return fullRecipes.filter(recipe => recipe !== null);
+  } catch (error) {
+    console.error("Error al obtener los detalles completos de las recetas:", error);
+    return []; // Devolvemos un array vacío en caso de error
   }
 };
