@@ -6,15 +6,16 @@ const MegaMenu = ({ onCategoryClick, allCategories }) => {
   return (
     <div className="mega-menu-content">
       <div className="menu-column">
-        <h4>Categorías</h4>
+        <h4>Categories</h4>
         <ul>
           {Array.isArray(allCategories) && allCategories.map(cat => (
             <li key={cat.strCategory}>
-              {/* --- CORRECCIÓN CLAVE AQUÍ --- */}
-              {/* El 'to' ahora incluye el ancla #results */}
               <Link
-                to={`/?category=${cat.strCategory}#results`}
-                onClick={() => onCategoryClick(cat.strCategory)}
+                to={`/?category=${cat.strCategory}`} // El enlace es útil para SEO y abrir en nueva pestaña
+                onClick={(e) => {
+                  e.preventDefault(); // Prevenimos la navegación por defecto del Link
+                  onCategoryClick(cat.strCategory); // Usamos nuestra propia lógica de navegación con scroll
+                }}
               >
                 {cat.strCategory}
               </Link>

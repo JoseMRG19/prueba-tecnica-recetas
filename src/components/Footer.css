@@ -1,55 +1,48 @@
+/* src/components/Footer.css */
 .main-footer {
-  background-color: #84b42d;
-  border-top: 1px solid var(--color-border, #e0e0e0);
-  padding: 2rem 1rem;
+  background-color: #333; /* Un fondo oscuro para buen contraste */
+  color: rgba(255, 255, 255, 0.7); /* Texto blanco semi-transparente */
+  padding: 2.5rem 1rem;
   margin-top: 4rem;
   text-align: center;
-  font-size: 0.95rem;
-  color: var(--color-text-secondary, #555);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.footer-container {
-  max-width: 960px;
-  margin: 0 auto;
+  font-size: 0.9rem;
+  font-family: var(--font-family);
 }
 
 .footer-text {
-  margin: 0 0 1rem 0;
-  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
 }
 
-.footer-text a {
-  color: #007acc;
+.footer-text a, .footer-text a:visited {
+  color: white;
+  font-weight: 600;
   text-decoration: none;
-  font-weight: 500;
-  transition: color 0.2s ease-in-out;
+  transition: color 0.2s;
 }
 
 .footer-text a:hover {
-  color: #005f99;
-  text-decoration: underline;
+  color: var(--color-primary);
 }
 
 .heart {
   color: #e25555;
-  font-size: 1.1em;
-  vertical-align: middle;
+  display: inline-block;
+  margin: 0 0.25rem;
 }
 
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 1.2rem;
-  font-size: 1.25rem;
-  margin-top: 0.5rem;
+  gap: 1.5rem;
+  font-size: 1.5rem;
 }
 
-.social-links a {
-  color: #555;
-  transition: color 0.3s ease;
+.social-links a, .social-links a:visited {
+  color: white;
+  transition: color 0.2s, transform 0.2s;
 }
 
 .social-links a:hover {
-  color: #007acc;
+  color: var(--color-primary);
+  transform: scale(1.1);
 }

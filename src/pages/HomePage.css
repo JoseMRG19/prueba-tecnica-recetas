@@ -1,19 +1,20 @@
-/* src/pages/HomePage.css */
-
 .page-content {
   /* Añadimos padding a los lados para que el contenido tenga un respiro */
   padding-bottom: 4rem;
   padding-left: 1.5rem;
-  padding-right: 1.5rem
+  padding-right: 1.5rem;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
 }
 
 .section-title {
   text-align: center;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-text-secondary);
+  color: var(--color-primary-dark);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   margin: 0 0 2rem 0;
   position: relative;
   padding-bottom: 1rem;
@@ -26,18 +27,25 @@
   left: 50%;
   transform: translateX(-50%);
   width: 60px;
-  height: 2px;
+  height: 3px;
   background-color: var(--color-primary);
+  border-radius: 2px;
 }
 
 .explore-section {
   padding: 4rem 0;
+  background-color: var(--color-surface);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
 }
 
 .filter-section {
   background-color: var(--color-surface);
-  padding: 4rem 0;
+  padding: 4rem 1.5rem;
   margin: 3rem 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-sm);
 }
 
 .results-section {
@@ -47,6 +55,7 @@
 .results-title {
   font-size: 2.2rem;
   font-weight: 800;
+  color: var(--color-primary-dark);
   text-align: center;
   margin-bottom: 2.5rem;
 }
@@ -55,4 +64,5 @@
   text-align: center;
   padding: 3rem;
   color: var(--color-text-secondary);
+  font-style: italic;
 }

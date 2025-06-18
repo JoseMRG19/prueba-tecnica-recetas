@@ -18,7 +18,6 @@ const RecipeDetailPage = () => {
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
-      // Reset state on each new search
       setLoading(true);
       setError(null);
       setRecipe(null);
@@ -40,7 +39,6 @@ const RecipeDetailPage = () => {
     fetchRecipeDetails();
   }, [recipeId]);
 
-  // Function to extract the ingredient list from the recipe object
   const getIngredients = (recipeData) => {
     const ingredients = [];
     for (let i = 1; i <= 20; i++) {
@@ -53,12 +51,10 @@ const RecipeDetailPage = () => {
     return ingredients;
   };
 
-  // --- Conditional Rendering ---
   if (loading) return <div className="page-center"><LoadingSpinner /></div>;
   if (error) return <div className="page-center"><ErrorMessage message={error} /></div>;
   if (!recipe) return <div className="page-center"><p>Recipe not available.</p></div>;
 
-  // --- Data Preparation ---
   const ingredients = getIngredients(recipe);
   const flagUrl = getFlagUrl(recipe.strArea);
   const youtubeVideoId = recipe.strYoutube ? recipe.strYoutube.split('v=')[1]?.split('&')[0] : null;
@@ -71,8 +67,6 @@ const RecipeDetailPage = () => {
         <h1>{recipe.strMeal}</h1>
         <div className="meta-info">
           {recipe.strCategory && <span className="meta-tag">{recipe.strCategory}</span>}
-
-          {/* Show flag next to the area */}
           {recipe.strArea && (
             <span className="meta-tag area-tag">
               {flagUrl && <img src={flagUrl} alt={`Flag of ${recipe.strArea}`} className="flag-icon" />}
@@ -98,8 +92,8 @@ const RecipeDetailPage = () => {
             <img src={recipe.strMealThumb.replace('/preview', '')} alt={recipe.strMeal} className="recipe-image" />
           )}
         </div>
-
-        <div className="recipe-instructions-container">
+        
+        <div className="ingredients-section">
           <h2>Ingredients</h2>
           <ul className="ingredients-list">
             {ingredients.map((ing, index) => (
@@ -111,9 +105,22 @@ const RecipeDetailPage = () => {
         </div>
       </div>
 
+      {/* --- SECCIÓN DE INSTRUCCIONES MODIFICADA --- */}
       <div className="instructions-section">
         <h2>Instructions</h2>
-        <p className="instructions-text">{recipe.strInstructions}</p>
+        <ol className="instructions-list">
+          {/* 
+            Esta lógica divide el texto de instrucciones en un array por cada salto de línea,
+            filtra las líneas que estén vacías, y luego crea un elemento de lista (<li>)
+            para cada paso, resultando en una lista numerada y semánticamente correcta.
+          */}
+          {recipe.strInstructions
+            .split(/\r?\n/)
+            .filter(line => line.trim() !== '')
+            .map((line, index) => (
+              <li key={index}>{line}</li>
+          ))}
+        </ol>
       </div>
 
       {recipe.strSource && (

@@ -1,65 +1,51 @@
 import React from 'react';
-import { 
-  createBrowserRouter, 
-  RouterProvider, 
-  Outlet, 
-  useNavigate 
-} from 'react-router-dom';
-
-// Importación de Componentes de Layout y Páginas
+import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import ScrollProgressBar from './components/ScrollProgressBar'; // <-- CAMBIO: Importamos el nuevo componente
 import HomePage from './pages/HomePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-
-// Importación de Estilos Globales
+import ScrollProgressBar from './components/ScrollProgressBar';
 import './styles/globals.css';
 
-/**
- * AppLayout es el componente principal que define la estructura visual de toda la aplicación.
- * Contiene elementos persistentes como la barra de navegación y el indicador de progreso de scroll.
- */
 const AppLayout = () => {
   const navigate = useNavigate();
 
-  // Función que se pasa a la Navbar para manejar el envío de una búsqueda.
+  // Función para la búsqueda desde la Navbar
   const handleSearchSubmit = (searchTerm) => {
-    if (searchTerm.trim()) {
-      navigate(`/?search=${searchTerm.trim()}`);
-    } else {
-      navigate('/');
-    }
+    navigate(searchTerm.trim() ? `/?search=${searchTerm.trim()}` : '/');
+  };
+  
+  // Función para los filtros que también maneja el scroll
+  const handleFilterNavigate = (filterUrl) => {
+    navigate(filterUrl);
+    
+    // Hacemos scroll después de navegar
+    setTimeout(() => {
+      const resultsSection = document.getElementById('results');
+      if (resultsSection) {
+        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   };
 
   return (
     <>
-      {/* --- CAMBIO --- */}
-      {/* Reemplazamos NavigationLoader por ScrollProgressBar */}
       <ScrollProgressBar />
-      
-      <Navbar onSearchSubmit={handleSearchSubmit} />
-
+      {/* Pasamos ambas funciones a la Navbar */}
+      <Navbar onSearchSubmit={handleSearchSubmit} onFilterNavigate={handleFilterNavigate} />
       <main>
-        {/* Outlet renderizará la página activa */}
-        <Outlet />
+        {/* Pasamos la función de filtro al Outlet para que HomePage la use */}
+        <Outlet context={{ handleFilterNavigate }} />
       </main>
     </>
   );
 };
 
-// Configuración del enrutador de la aplicación.
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      { 
-        path: "/", 
-        element: <HomePage /> 
-      },
-      { 
-        path: "/recipe/:recipeId", 
-        element: <RecipeDetailPage /> 
-      },
+      { path: "/", element: <HomePage /> },
+      { path: "/recipe/:recipeId", element: <RecipeDetailPage /> },
     ],
   },
 ]);

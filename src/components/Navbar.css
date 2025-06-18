@@ -1,103 +1,121 @@
-/* Wrapper principal que se pega en la parte superior de la ventana */
+/* Contenedor fijo del header, con fondo translúcido y degradado suave */
 .header-wrapper {
-  position: fixed; /* Se mantiene fijo en la pantalla */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  
-  /* Transición suave para el cambio de color de fondo y sombra */
+
+  /* Fondo inicial con degradado oscuro y transición suave */
+  background: linear-gradient(to bottom, rgba(36, 56, 11, 0.7) 0%, rgba(36, 56, 11, 0) 100%);
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  
-  /* --- ESTADO INICIAL (TRANSPARENTE CON DEGRADADO) --- */
-  /* El degradado asegura que el texto blanco sea legible sobre cualquier imagen */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0) 100%);
+  box-shadow: none;
+  backdrop-filter: saturate(180%) blur(10px);
 }
 
-/* --- ESTADO "SCROLLED" --- */
-/* Cuando el wrapper tiene la clase 'scrolled', se vuelve verde y sólido */
+/* Cuando se hace scroll, fondo sólido verde y sombra definida */
 .header-wrapper.scrolled {
   background-color: var(--color-primary);
   box-shadow: var(--shadow-md);
 }
 
-/* Contenido de la barra de navegación */
+/* Contenido del header con padding ajustable y suave transición */
 .main-header {
-  padding: 1.2rem 0; /* Un padding inicial generoso */
-  transition: padding 0.3s ease-in-out;
+  padding: 1.2rem 0;
+  transition: padding 0.3s ease-in-out, border-bottom 0.3s ease-in-out;
+  font-family: var(--font-family);
 }
 
-/* El header se hace un poco más compacto al hacer scroll */
+/* Header más compacto y sin borde al hacer scroll */
 .header-wrapper.scrolled .main-header {
   padding: 1rem 0;
+  border-bottom: none;
 }
 
-/* Contenedor que centra el contenido de la barra */
+/* Borde sutil blanco semi-transparente cuando NO está scrolled */
+.header-wrapper:not(.scrolled) .main-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15); /* Borde sutil y minimalista */
+}
+
+
+/* Flex container para centrar contenido y separar elementos */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
-  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* Logo */
+/* Logo con tipografía elegante, sombra sutil y color blanco */
 .nav-logo {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: white; /* Siempre blanco para que contraste en ambos estados */
+  font-size: 1.7rem;
+  font-weight: 900;
+  color: #f0f8e8; /* Blanco suave verdoso para no cansar */
   text-decoration: none;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.2); /* Sombra para legibilidad inicial */
+  text-shadow: 1px 1px 3px rgba(18, 33, 3, 0.6);
   flex-shrink: 0;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Barra de búsqueda */
+/* Contraste minimalista y elegante para el hover del logo */
+.nav-logo:hover {
+  color: rgba(255, 255, 255, 0.65); /* Un blanco más tenue al hacer hover para un contraste sutil */
+  text-shadow: 1px 1px 4px rgba(18, 33, 3, 0.8); /* Sombra un poco más marcada para profundidad */
+}
+
+/* Wrapper de búsqueda, con max-width y posición relativa */
 .search-wrapper {
   width: 100%;
-  position: relative; 
   max-width: 450px;
+  position: relative;
 }
 
-/* Botón de categorías */
+/* Botón categorías: redondeado, con colores claros y transición */
 .menu-toggle {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.85);
   border: 1px solid transparent;
-  color: var(--color-primary);
+  color: #333333; /* Color del texto a un negro suave */
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
-  padding: 0.6rem 1.2rem;
+  padding: 0.65rem 1.3rem;
   border-radius: 50px;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(132, 180, 45, 0.3);
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
   flex-shrink: 0;
 }
 
 .menu-toggle:hover {
   background-color: white;
-  transform: scale(1.05);
+  transform: scale(1.07);
+  box-shadow: 0 4px 12px rgba(106, 145, 36, 0.5);
+  color: #1a1a1a; /* Un negro un poco más oscuro al hacer hover si quieres un pequeño cambio */
 }
 
-.menu-toggle span, .menu-toggle svg {
-  transition: color 0.3s ease-in-out;
-}
-
-/* Estilo del botón cuando la barra es transparente */
+/* Cuando la barra es transparente, el botón es más sutil */
 .header-wrapper:not(.scrolled) .menu-toggle {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.8);
-  color: white;
-}
-.header-wrapper:not(.scrolled) .menu-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white; /* Mantenemos el texto blanco en este estado */
+  box-shadow: none;
 }
 
-/* Estilos del Megamenú */
-.mega-menu-container, .mega-menu-enter, .mega-menu-enter-active, .mega-menu-exit, .mega-menu-exit-active {
+.header-wrapper:not(.scrolled) .menu-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+  color: #f0f0f0; /* Un blanco más brillante o un gris claro al hacer hover en estado transparente */
+}
+
+/* Estilos del Megamenú: restaurados a su estado original */
+.mega-menu-container,
+.mega-menu-enter,
+.mega-menu-enter-active,
+.mega-menu-exit,
+.mega-menu-exit-active {
   position: absolute;
   top: 100%;
   left: 0;
@@ -105,9 +123,27 @@
   display: flex;
   justify-content: center;
   padding: 0 1rem;
+  /* Se eliminan las propiedades de fondo, borde, sombra y overflow que habías añadido recientemente */
 }
 
-.mega-menu-enter { opacity: 0; transform: translateY(-10px); }
-.mega-menu-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }
-.mega-menu-exit { opacity: 1; transform: translateY(0); }
-.mega-menu-exit-active { opacity: 0; transform: translateY(-10px); transition: opacity 300ms, transform 300ms; }
+.mega-menu-enter {
+  opacity: 0;
+  transform: translateY(-10px); /* Vuelve a -10px, como estaba antes */
+}
+
+.mega-menu-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms; /* Vuelve a 300ms, como estaba antes */
+}
+
+.mega-menu-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mega-menu-exit-active {
+  opacity: 0;
+  transform: translateY(-10px); /* Vuelve a -10px, como estaba antes */
+  transition: opacity 300ms, transform 300ms; /* Vuelve a 300ms, como estaba antes */
+}

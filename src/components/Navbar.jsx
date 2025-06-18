@@ -11,15 +11,12 @@ import { searchRecipeByName, getCategories } from '../api/theMealDB';
 
 import './Navbar.css';
 
-const Navbar = () => {
-  // --- LÓGICA EXISTENTE (INTACTA) ---
+const Navbar = ({ onSearchSubmit, onFilterNavigate }) => {
   const [localSearchTerm, setLocalSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [apiCategories, setApiCategories] = useState([]);
-  
-  // --- NUEVO ESTADO PARA EL SCROLL ---
   const [isScrolled, setIsScrolled] = useState(false);
 
   const navigate = useNavigate();
@@ -27,24 +24,14 @@ const Navbar = () => {
   const megaMenuRef = useRef(null);
   const debouncedSearchTerm = useDebounce(localSearchTerm, 300);
 
-  // --- NUEVO EFECTO PARA DETECTAR EL SCROLL ---
   useEffect(() => {
-    const handleScroll = () => {
-      // Si el usuario ha bajado más de 10px, activamos el estado
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
-    // Limpiamos el evento al desmontar el componente
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // --- LÓGICA EXISTENTE (INTACTA) ---
   useEffect(() => {
-    if (debouncedSearchTerm.trim() !== '') {
+    if (debouncedSearchTerm.trim()) {
       const fetchSuggestions = async () => {
         const results = await searchRecipeByName(debouncedSearchTerm);
         setSuggestions(results ? results.slice(0, 5) : []);
@@ -68,11 +55,9 @@ const Navbar = () => {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    if (localSearchTerm.trim()) {
-      navigate(`/?search=${localSearchTerm.trim()}`);
-      setShowSuggestions(false);
-      setLocalSearchTerm('');
-    }
+    onSearchSubmit(localSearchTerm);
+    setShowSuggestions(false);
+    setLocalSearchTerm('');
   };
   
   const handleSuggestionClick = (recipeId) => {
@@ -81,17 +66,24 @@ const Navbar = () => {
     setLocalSearchTerm('');
   };
   
-  const handleCategoryClick = (categoryName) => {
-    navigate(`/?category=${categoryName}#results`);
+  const handleCategoryClickFromMenu = (categoryName) => {
+    onFilterNavigate(`/?category=${categoryName}`);
     setShowMegaMenu(false);
+  };
+  
+  // --- NUEVA FUNCIÓN PARA EL LOGO ---
+  const handleLogoClick = (e) => {
+    e.preventDefault(); // Prevenimos la navegación por defecto del Link
+    onFilterNavigate('/'); // Usamos la función del padre para navegar a la raíz
+    setShowMegaMenu(false); // Cierra el menú si está abierto
   };
 
   return (
-    // Aplicamos la clase 'scrolled' dinámicamente
     <div className={`header-wrapper ${isScrolled ? 'scrolled' : ''}`}>
       <header className="main-header">
         <div className="container nav-container">
-          <Link to="/" className="nav-logo" onClick={() => setShowMegaMenu(false)}>
+          {/* --- CAMBIO AQUÍ --- */}
+          <Link to="/" className="nav-logo" onClick={handleLogoClick}>
             MyRecipeBook
           </Link>
           
@@ -122,7 +114,7 @@ const Navbar = () => {
         nodeRef={megaMenuRef}
       >
         <div ref={megaMenuRef} className="mega-menu-container">
-          <MegaMenu onCategoryClick={handleCategoryClick} allCategories={apiCategories} />
+          <MegaMenu onCategoryClick={handleCategoryClickFromMenu} allCategories={apiCategories} />
         </div>
       </CSSTransition>
     </div>

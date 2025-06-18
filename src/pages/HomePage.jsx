@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useOutletContext } from 'react-router-dom';
 import { 
   getRecipesByCategory, 
   searchRecipeByName, 
@@ -21,9 +21,9 @@ import './HomePage.css';
 
 const HomePage = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const queryParams = new URLSearchParams(location.search);
+  const { handleFilterNavigate } = useOutletContext(); // Recibe la función de App.jsx
 
+  const queryParams = new URLSearchParams(location.search);
   const urlCategory = queryParams.get('category');
   const urlSearch = queryParams.get('search');
   const urlArea = queryParams.get('area');
@@ -37,8 +37,7 @@ const HomePage = () => {
 
   useEffect(() => {
     const fetchRecipesLogic = async () => {
-      setLoading(true);
-      setError(null);
+      setLoading(true); setError(null);
       try {
         let basicData;
         if (debouncedSearchTerm) {
@@ -53,7 +52,7 @@ const HomePage = () => {
             basicData = await getRecipesByCategory(categoryToFetch);
           }
         }
-        if (basicData && basicData.length > 0) {
+        if (basicData?.length > 0) {
           const dataToProcess = debouncedSearchTerm ? basicData : basicData.slice(0, 20);
           const fullData = await getFullRecipesDetails(dataToProcess);
           setRecipes(fullData);
@@ -61,7 +60,7 @@ const HomePage = () => {
           setRecipes([]);
         }
       } catch (err) {
-        setError("Sorry, there was a problem loading the recipes. Please try again.");
+        setError("Sorry, a problem occurred while loading recipes.");
       } finally {
         setLoading(false);
       }
@@ -69,25 +68,12 @@ const HomePage = () => {
     fetchRecipesLogic();
   }, [urlCategory, debouncedSearchTerm, urlArea]);
 
-  // --- FUNCIÓN DE SCROLL ---
-  const scrollToResults = () => {
-    // Usamos un pequeño delay para asegurar que el DOM se haya actualizado
-    setTimeout(() => {
-      const resultsSection = document.getElementById('results');
-      if (resultsSection) {
-        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
-  };
-
   const handleCategoryChange = (newCategory) => {
-    navigate(`/?category=${newCategory}`);
-    scrollToResults(); // Llamamos a la función de scroll
+    handleFilterNavigate(`/?category=${newCategory}`);
   };
 
   const handleCountrySelect = (countryName) => {
-    navigate(`/?area=${countryName}`);
-    scrollToResults(); // Llamamos a la función de scroll
+    handleFilterNavigate(`/?area=${countryName}`);
   };
 
   const getPageTitle = () => {
@@ -113,7 +99,6 @@ const HomePage = () => {
             <CategoryFilter selectedCategory={activeFilter} onCategoryChange={handleCategoryChange} />
           </div>
         </section>
-        {/* --- AÑADIMOS EL ID AQUÍ --- */}
         <section id="results" className="results-section">
           <div className="container">
             <h3 className="results-title">{getPageTitle()}</h3>
@@ -122,12 +107,10 @@ const HomePage = () => {
             {!loading && !error && (
               recipes.length > 0 ? (
                 <div className="recipe-grid">
-                  {recipes.map((recipe) => (
-                    <RecipeCard key={recipe.idMeal} recipe={recipe} />
-                  ))}
+                  {recipes.map((recipe) => (<RecipeCard key={recipe.idMeal} recipe={recipe} />))}
                 </div>
               ) : (
-                <p className="no-results-message">No recipes found for this selection...</p>
+                <p className="no-results-message">No recipes found...</p>
               )
             )}
           </div>

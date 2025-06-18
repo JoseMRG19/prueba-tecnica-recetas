@@ -2,10 +2,11 @@ import React from 'react';
 import { getFlagUrl, areaToCountryCode } from '../utils/countryUtils';
 import './CategoryFilter.css';
 
-// Obtenemos la lista de países dinámicamente, excluyendo "Unknown"
+// El cálculo se hace una sola vez cuando el módulo se carga
 const displayCountries = Object.keys(areaToCountryCode).filter(c => c !== 'Unknown');
 
 const CountryFilter = ({ onCountrySelect, selectedArea }) => {
+  // ... el resto del componente se queda igual
   return (
     <div className="category-filter-container">
       {displayCountries.map((countryName) => (
