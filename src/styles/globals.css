@@ -32,6 +32,12 @@ body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
+  
+  /* --- LÍNEA CLAVE AÑADIDA --- */
+  /* Empujamos todo el contenido hacia abajo para dejar espacio a la Navbar fija.
+     Ajusta este valor para que coincida con la altura de tu Navbar.
+     (ej: 70px es un buen punto de partida) */
+  padding-top: 70px; 
 }
 
 .container {
@@ -59,6 +65,3 @@ body {
     grid-template-columns: 1fr;
   }
 }
-
-/* --- SECCIÓN DE NPROGRESS ELIMINADA --- */
-/* Ya no hay estilos para #nprogress aquí */

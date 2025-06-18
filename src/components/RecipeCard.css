@@ -1,55 +1,36 @@
-:root {
-  --color-surface: #135D45; /* Fondo verde profundo */
-  --color-hover: #2E2E2E;   /* Gris elegante */
-  --color-primary: #00FF88; /* Verde brillante para detalles */
-  --color-primary-dark: #FFFFFF; /* Blanco para texto sobre negro */
-  --color-text-primary: #FFFFFF; /* Blanco principal */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.15);
-  --shadow-md: 0 6px 12px rgba(0, 0, 0, 0.2);
-  --border-radius: 12px;
-}
-
-/* Estilo principal de la tarjeta de receta */
+/* --- ESTILO PRINCIPAL DE LA TARJETA --- */
 .recipe-card {
-  background-color: var(--color-surface);
+  background-color: var(--color-surface); /* Fondo blanco por defecto */
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
   text-decoration: none;
-  color: var(--color-text-primary);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-
-  transition: background-color 0.3s ease, 
-              transform 0.3s ease, 
-              box-shadow 0.3s ease;
+  border: 1px solid var(--color-border-light);
+  
+  /* --- TRANSICIÓN SUAVE PARA TODOS LOS EFECTOS --- */
+  transition: all 0.3s ease-in-out;
 }
 
+/* --- ESTADO :HOVER (LA CLAVE DEL CAMBIO) --- */
 .recipe-card:hover {
-  background-color: var(--color-hover);
-  transform: translateY(-10px);
-  box-shadow: var(--shadow-md);
-  border: 2px solid var(--color-primary); /* Borde verde neón */
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  background-color: var(--color-primary); /* ¡La tarjeta se vuelve verde! */
+  color: white; /* El texto se vuelve blanco para contrastar */
 }
 
 /* Contenedor de la imagen */
 .recipe-card-image-wrapper {
-  height: 220px;
+  height: 200px;
   width: 100%;
-  overflow: hidden;
 }
 
-/* Imagen dentro del contenedor */
 .recipe-card-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease-out, filter 0.4s ease-out;
-}
-
-.recipe-card:hover .recipe-card-image {
-  transform: scale(1.05);
-  filter: brightness(1.03);
 }
 
 /* Contenido de texto */
@@ -60,26 +41,30 @@
   flex-grow: 1;
 }
 
-/* Contenedor para la categoría y la bandera */
+/* Contenedor para categoría y bandera */
 .recipe-card-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 0.75rem;
-  opacity: 1;
-  transition: opacity 0.3s ease;
 }
 
-/* Categoría (tipo de comida) */
+/* Etiqueta de la categoría */
 .recipe-card-category {
-  display: inline-block;
-  background-color: #000000;
-  color: var(--color-primary-dark);
+  background-color: var(--color-platinum-bg);
+  color: #5C5858;
   padding: 0.25rem 0.75rem;
   border-radius: 6px;
   font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
+  transition: all 0.3s ease-in-out;
+}
+
+/* La etiqueta cambia en el hover para ser legible sobre el fondo verde */
+.recipe-card:hover .recipe-card-category {
+  background-color: white;
+  color: var(--color-primary);
 }
 
 /* Bandera del país */
@@ -87,20 +72,19 @@
   width: 28px;
   height: auto;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* Título de la receta */
 .recipe-card-title {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.4;
   margin: 0;
-  color: var(--color-primary-dark);
-  transition: color 0.3s ease;
+  color: var(--color-text-primary); /* Texto oscuro por defecto */
+  transition: color 0.3s ease-in-out;
 }
 
-/* Cambia el color del título al hacer hover */
+/* El título se vuelve blanco en el hover */
 .recipe-card:hover .recipe-card-title {
-  color: var(--color-primary);
+  color: white;
 }

@@ -1,0 +1,22 @@
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  z-index: 1001; /* Z-index más alto que la Navbar */
+  
+  /* Le damos un fondo sutil al contenedor para que la barra siempre se vea */
+  background-color: rgba(0, 0, 0, 0.1); 
+}
+
+.scroll-progress-bar {
+  height: 100%;
+  
+  /* --- CAMBIO DE COLOR --- */
+  background-color: #ffffff; /* Un blanco brillante */
+  /* Opcional: añade una pequeña sombra para que resalte más */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+  
+  transition: width 0.1s linear;
+}

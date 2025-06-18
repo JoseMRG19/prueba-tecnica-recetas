@@ -1,49 +1,55 @@
-/* --- ESTILOS PARA LA PÁGINA DE DETALLE - TEMA OSCURO --- */
+/* --- ESTILOS PARA LA PÁGINA DE DETALLE - TEMA PERSONALIZADO --- */
 
-/* Contenedor principal de la página */
 .recipe-detail-page {
-  /* Variables locales para el tema oscuro de esta página */
   --dark-bg: #f0f0f3; 
   --dark-surface: #84B42D; 
-  --dark-border: #4A5568; /* Un gris medio para los bordes */
-  --dark-text-primary: #030303; /* Un blanco grisáceo para el texto principal */
-  --dark-text-secondary: #A0AEC0; /* Un gris claro para el texto secundario */
+  --dark-border: #4A5568;
+  --dark-text-primary: #030303;
+  --dark-text-secondary: #A0AEC0;
 
   background-color: var(--dark-bg);
   color: var(--dark-text-primary);
   padding: 2rem 0 4rem;
-  overflow: hidden; /* Para contener las animaciones de entrada */
+  overflow: hidden;
 }
 
-/* Animación de entrada para los elementos */
 @keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* Enlace para volver atrás */
+/* --- SECCIÓN MODIFICADA --- */
+/* Enlace para volver atrás con estilo de píldora */
 .back-link {
-  display: inline-block;
-  margin-bottom: 2rem;
-  font-weight: 500;
-  color: var(--dark-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-surface); /* Fondo blanco */
+  color: var(--color-text-secondary); /* Texto gris */
+  padding: 0.7rem 1.3rem;
+  border-radius: 50px;
+  border: 1px solid var(--color-border);
+  font-weight: 600;
+  text-decoration: none;
+  margin-bottom: 3rem; /* Más espacio */
+  transition: all 0.2s ease-in-out;
   animation: fadeInUp 0.5s ease-out both;
 }
-.back-link:hover {
-  color: var(--color-primary);
-}
 
-/* Cabecera con el título y los metadatos */
+.back-link:hover {
+  background-color: #f8f9fa;
+  color: var(--color-primary);
+  border-color: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+/* --- FIN DE LA SECCIÓN MODIFICADA --- */
+
+
 .recipe-header {
   text-align: center;
   margin-bottom: 3rem;
-  animation: fadeInUp 0.5s ease-out 0.2s both; /* Retraso en la animación */
+  animation: fadeInUp 0.5s ease-out 0.2s both;
 }
 
 .recipe-header h1 {
@@ -81,10 +87,9 @@
   border-radius: 3px;
 }
 
-/* Layout principal de dos columnas */
 .recipe-main-content {
   display: grid;
-  grid-template-columns: 1fr 1.2fr; /* Damos más espacio al texto */
+  grid-template-columns: 1fr 1.2fr;
   gap: 3rem;
   align-items: flex-start;
   margin-bottom: 3rem;
@@ -97,10 +102,9 @@
   }
 }
 
-/* Contenedor de la imagen/video */
 .recipe-media {
-  position: sticky; /* Hacemos que la imagen se quede fija al hacer scroll */
-  top: 100px; /* Distancia desde la parte superior (considerando la navbar) */
+  position: sticky;
+  top: 100px;
 }
 
 .recipe-media .recipe-image,
@@ -111,7 +115,7 @@
   transition: transform 0.3s ease;
 }
 .recipe-media:hover .recipe-image {
-    transform: scale(1.03);
+  transform: scale(1.03);
 }
 
 .video-responsive {
@@ -127,7 +131,6 @@
   height: 100%;
 }
 
-/* Títulos de sección (Ingredientes, Instrucciones) */
 .ingredients-section h2,
 .instructions-section h2 {
   color: var(--dark-text-primary);
@@ -138,7 +141,6 @@
   display: inline-block;
 }
 
-/* Lista de ingredientes */
 .ingredients-list {
   list-style: none;
   padding: 0;
@@ -154,17 +156,16 @@
   transition: all 0.2s ease-in-out;
 }
 .ingredients-list li:hover {
-    transform: translateX(5px);
-    border-left: 4px solid var(--color-primary);
+  transform: translateX(5px);
+  border-left: 4px solid var(--color-primary);
 }
-.ingredients-list li::before { content: ''; } /* Quitamos el ícono de planta */
+.ingredients-list li::before { content: ''; }
 
-/* Párrafo de instrucciones */
 .instructions-text {
-  background-color: transparent; /* Sin fondo para que se integre */
+  background-color: transparent;
   border: none;
   padding: 0;
-  line-height: 1.9; /* Más espacio entre líneas para mejor lectura */
+  line-height: 1.9;
   font-size: 1.1rem;
   color: var(--dark-text-secondary);
   white-space: pre-wrap;

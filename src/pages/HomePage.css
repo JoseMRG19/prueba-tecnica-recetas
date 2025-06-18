@@ -2,8 +2,9 @@
 
 .page-content {
   /* Añadimos padding a los lados para que el contenido tenga un respiro */
+  padding-bottom: 4rem;
   padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-right: 1.5rem
 }
 
 .section-title {
@@ -54,7 +55,4 @@
   text-align: center;
   padding: 3rem;
   color: var(--color-text-secondary);
-}
-html {
-  scroll-behavior: smooth;
 }

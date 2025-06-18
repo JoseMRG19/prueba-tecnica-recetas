@@ -1,14 +1,39 @@
-/* Wrapper principal con sombra elegante */
+/* Wrapper principal que ahora controla la forma curvada */
 .hero-carousel-wrapper {
-  margin-bottom: 3rem;
-  box-shadow: var(--shadow-md);
+  position: relative; /* Necesario para posicionar la curva (pseudo-elemento) */
+  width: 100%;
   animation: fadeIn 1s ease-out;
+  /* La sombra ahora se aplica al carrusel directamente */
 }
 
-/* Contenedor del slide con animación */
+/* El pseudo-elemento que crea la curva en la parte inferior */
+.hero-carousel-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 80px; /* Controla la profundidad de la curva */
+  background-color: var(--color-background); /* Mismo color que el fondo de la página */
+  
+  /* --- LA MAGIA DE LA CURVA --- */
+  border-top-left-radius: 100%;
+  border-top-right-radius: 100%;
+  
+  transform: translateY(50%); /* Mueve la mitad de la curva hacia abajo */
+  z-index: 10; /* Asegura que la curva esté por encima del carrusel */
+}
+
+/* El carrusel ahora necesita un z-index para quedar detrás de la curva */
+.presentation-mode {
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--shadow-md); /* Movemos la sombra aquí */
+}
+
 .presentation-mode .slide-container {
   position: relative;
-  height: 400px;
+  height: 450px;
   overflow: hidden;
   animation: slideIn 1s ease-in-out;
 }
@@ -21,11 +46,10 @@
   transition: transform 0.8s ease;
 }
 
-.presentation-mode .slide-container img:hover {
+.presentation-mode .slide-container:hover img {
   transform: scale(1.03);
 }
 
-/* Overlay animado */
 .legend-overlay {
   position: absolute;
   top: 0;
@@ -37,12 +61,12 @@
   align-items: center;
   justify-content: center;
   animation: fadeInRight 1.2s ease-out;
+  z-index: 2; /* Por encima de la imagen del slide */
 }
 
-/* Contenido animado y con blur */
 .legend-content {
-  background-color: #F1F2F2;
-  backdrop-filter: blur(5px);
+  background-color: rgba(241, 242, 242, 0.9); /* Ligeramente más translúcido */
+  backdrop-filter: blur(8px); /* Más desenfoque */
   padding: 2.5rem;
   border-radius: var(--border-radius);
   color: var(--color-text-primary);
@@ -58,18 +82,12 @@
   font-size: 2rem;
   font-weight: 800;
   margin: 0 0 0.5rem 0;
-  transition: color 0.3s ease;
-}
-
-.legend-content h2:hover {
-  color: var(--color-primary);
 }
 
 .legend-content p {
   font-size: 1rem;
   color: var(--color-text-secondary);
   margin-bottom: 1.5rem;
-  transition: opacity 0.3s ease;
 }
 
 .legend-button {
@@ -88,17 +106,13 @@
   transform: scale(1.05);
 }
 
-/* Controles */
+/* --- ESTILOS DE CONTROLES Y ANIMACIONES (INTACTOS) --- */
 .carousel .control-dots .dot {
   background: var(--color-primary) !important;
   box-shadow: none !important;
   transition: transform 0.2s ease;
 }
-
-.carousel .control-dots .dot:hover {
-  transform: scale(1.2);
-}
-
+.carousel .control-dots .dot:hover { transform: scale(1.2); }
 .carousel .control-arrow {
   background: rgba(0, 0, 0, 0.3) !important;
   height: 50px;
@@ -108,24 +122,21 @@
   border-radius: 50%;
   transition: background-color 0.3s ease;
 }
+.carousel .control-arrow:hover { background: rgba(0, 0, 0, 0.5) !important; }
 
-.carousel .control-arrow:hover {
-  background: rgba(0, 0, 0, 0.5) !important;
-}
-
-/* Responsivo para móviles */
+/* --- MEDIA QUERY PARA MÓVILES (INTACTA) --- */
 @media (max-width: 768px) {
-  .presentation-mode .slide-container {
-    height: 350px;
+  /* ... tus estilos responsivos se quedan igual ... */
+  .hero-carousel-wrapper::after {
+    height: 40px; /* Hacemos la curva menos pronunciada en móviles */
   }
-
+  .presentation-mode .slide-container { height: 350px; }
   .legend-overlay {
     width: 100%;
     max-width: none;
     bottom: auto;
     background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
   }
-
   .legend-content {
     background: none;
     backdrop-filter: none;
@@ -137,43 +148,11 @@
     opacity: 1;
     transform: none;
   }
-
-  .legend-content p {
-    color: #f0f0f0;
-  }
+  .legend-content p { color: #f0f0f0; }
 }
 
-/* ANIMACIONES */
-@keyframes fadeIn {
-  from { opacity: 0 }
-  to { opacity: 1 }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(60px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes contentFadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* --- KEYFRAMES DE ANIMACIÓN (INTACTOS) --- */
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+@keyframes fadeInRight { from { opacity: 0; transform: translateX(60px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes contentFadeUp { to { opacity: 1; transform: translateY(0); } }
