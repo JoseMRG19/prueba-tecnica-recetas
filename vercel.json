@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api-proxy/:path*",
+      "destination": "https://www.themealdb.com/api/:path*"
+    }
+  ]
+}
