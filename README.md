@@ -2,7 +2,7 @@
 
 ¡Bienvenido a MyRecipeBook! Esta es una aplicación web moderna y completamente funcional construida con React, diseñada para ofrecer una experiencia de usuario fluida y atractiva al explorar, buscar y descubrir recetas de cocina de todo el mundo, utilizando la API de TheMealDB.
 
-**✨ [Ver la aplicación en vivo](prueba-tecnica-recetas.vercel.app) ✨** 
+**✨Copia y pega el link prueba-tecnica-recetas.vercel.app Ver la aplicación en vivo✨** 
 ---
 
 ## 🚀 Características Principales
