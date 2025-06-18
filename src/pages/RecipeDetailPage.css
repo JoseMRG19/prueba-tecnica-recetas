@@ -1,28 +1,56 @@
-/* Reemplazar todo en src/pages/RecipeDetailPage.css */
+/* --- ESTILOS PARA LA PÁGINA DE DETALLE - TEMA OSCURO --- */
 
+/* Contenedor principal de la página */
 .recipe-detail-page {
-  padding: 2rem 0 4rem; /* Espaciado vertical */
+  /* Variables locales para el tema oscuro de esta página */
+  --dark-bg: #f0f0f3; 
+  --dark-surface: #84B42D; 
+  --dark-border: #4A5568; /* Un gris medio para los bordes */
+  --dark-text-primary: #030303; /* Un blanco grisáceo para el texto principal */
+  --dark-text-secondary: #A0AEC0; /* Un gris claro para el texto secundario */
+
+  background-color: var(--dark-bg);
+  color: var(--dark-text-primary);
+  padding: 2rem 0 4rem;
+  overflow: hidden; /* Para contener las animaciones de entrada */
 }
 
+/* Animación de entrada para los elementos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enlace para volver atrás */
 .back-link {
   display: inline-block;
   margin-bottom: 2rem;
   font-weight: 500;
-  color: var(--color-text-secondary);
+  color: var(--dark-text-secondary);
+  animation: fadeInUp 0.5s ease-out both;
 }
 .back-link:hover {
   color: var(--color-primary);
 }
 
+/* Cabecera con el título y los metadatos */
 .recipe-header {
   text-align: center;
   margin-bottom: 3rem;
+  animation: fadeInUp 0.5s ease-out 0.2s both; /* Retraso en la animación */
 }
 
 .recipe-header h1 {
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-  color: var(--color-text-primary);
+  font-size: 3.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--dark-text-primary);
+  font-weight: 800;
 }
 
 .meta-tag {
@@ -31,39 +59,63 @@
   padding: 0.4rem 1rem;
   border-radius: 20px;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
   display: inline-block;
   margin: 0 0.5rem;
+  border: 1px solid var(--color-primary-dark);
 }
 
-/* ¡La clave del layout de dos columnas! */
+.area-tag {
+  background-color: var(--dark-surface);
+  color: var(--dark-text-primary);
+  border: 1px solid var(--dark-border);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.flag-icon {
+  width: 24px;
+  height: auto;
+  border-radius: 3px;
+}
+
+/* Layout principal de dos columnas */
 .recipe-main-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.2fr; /* Damos más espacio al texto */
   gap: 3rem;
-  align-items: flex-start; /* Alinea los elementos en la parte superior */
+  align-items: flex-start;
   margin-bottom: 3rem;
+  animation: fadeInUp 0.5s ease-out 0.4s both;
 }
 
-/* Responsividad para layout de una columna en pantallas pequeñas */
 @media (max-width: 768px) {
   .recipe-main-content {
-    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+    grid-template-columns: 1fr;
   }
+}
+
+/* Contenedor de la imagen/video */
+.recipe-media {
+  position: sticky; /* Hacemos que la imagen se quede fija al hacer scroll */
+  top: 100px; /* Distancia desde la parte superior (considerando la navbar) */
 }
 
 .recipe-media .recipe-image,
 .video-responsive {
-  width: 100%;
   border-radius: var(--border-radius);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.recipe-media:hover .recipe-image {
+    transform: scale(1.03);
 }
 
 .video-responsive {
-  overflow: hidden;
-  padding-bottom: 56.25%; /* Relación de aspecto 16:9 */
+  padding-bottom: 56.25%;
   position: relative;
   height: 0;
 }
@@ -75,62 +127,46 @@
   height: 100%;
 }
 
+/* Títulos de sección (Ingredientes, Instrucciones) */
 .ingredients-section h2,
 .instructions-section h2 {
-  color: var(--color-text-primary);
+  color: var(--dark-text-primary);
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-primary);
+  display: inline-block;
 }
 
+/* Lista de ingredientes */
 .ingredients-list {
   list-style: none;
   padding: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
 }
 
 .ingredients-list li {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 0.75rem 1rem;
+  background-color: var(--dark-surface);
+  border: 1px solid var(--dark-border);
+  padding: 0.8rem 1.2rem;
   margin-bottom: 0.5rem;
-  border-radius: var(--border-radius);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
 }
-
-.ingredients-list li::before {
-  content: '🌿'; /* Un pequeño ícono decorativo */
-  font-size: 1.2em;
+.ingredients-list li:hover {
+    transform: translateX(5px);
+    border-left: 4px solid var(--color-primary);
 }
+.ingredients-list li::before { content: ''; } /* Quitamos el ícono de planta */
 
+/* Párrafo de instrucciones */
 .instructions-text {
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  padding: 1.5rem;
-  border-radius: var(--border-radius);
-  line-height: 1.8;
-  white-space: pre-wrap; /* Para respetar los saltos de línea del texto de la API */
-  text-align: left; /* Alineación de texto a la izquierda para mejor lectura */
-}
-
-.recipe-source {
-  text-align: center;
-  margin-top: 2rem;
-  font-size: 0.9rem;
-  color: var(--color-text-secondary);
-}
-/* Estilo para el tag que contiene el área y la bandera */
-.area-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem; /* Espacio entre la bandera y el texto */
-}
-
-/* Estilo para la imagen de la bandera */
-.flag-icon {
-  width: 24px;  /* Ancho de la bandera */
-  height: auto;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  background-color: transparent; /* Sin fondo para que se integre */
+  border: none;
+  padding: 0;
+  line-height: 1.9; /* Más espacio entre líneas para mejor lectura */
+  font-size: 1.1rem;
+  color: var(--dark-text-secondary);
+  white-space: pre-wrap;
+  text-align: left;
 }

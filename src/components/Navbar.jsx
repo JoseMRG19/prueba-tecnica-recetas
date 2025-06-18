@@ -3,84 +3,125 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { CSSTransition } from 'react-transition-group';
 
-// Importación de componentes y lógica de API
 import SearchBar from './SearchBar';
+import SearchSuggestions from './SearchSuggestions';
 import MegaMenu from './MegaMenu';
-import { getCategories } from '../api/theMealDB';
+import useDebounce from '../hooks/useDebounce';
+import { searchRecipeByName, getCategories } from '../api/theMealDB';
 
-// Importación de estilos
 import './Navbar.css';
 
 const Navbar = () => {
-  // Estado para controlar la visibilidad del megamenú
-  const [showMegaMenu, setShowMegaMenu] = useState(false);
-  // Estado para almacenar las categorías de la API
-  const [apiCategories, setApiCategories] = useState([]);
-  // Estado local para el input de búsqueda, no afecta a la URL hasta que se envía
+  // --- LÓGICA EXISTENTE (INTACTA) ---
   const [localSearchTerm, setLocalSearchTerm] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [showMegaMenu, setShowMegaMenu] = useState(false);
+  const [apiCategories, setApiCategories] = useState([]);
   
-  const navigate = useNavigate();
-  const nodeRef = useRef(null); // Referencia para la animación con CSSTransition
+  // --- NUEVO ESTADO PARA EL SCROLL ---
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Efecto para obtener las categorías de la API una sola vez, al montar el componente
+  const navigate = useNavigate();
+  const searchRef = useRef(null);
+  const megaMenuRef = useRef(null);
+  const debouncedSearchTerm = useDebounce(localSearchTerm, 300);
+
+  // --- NUEVO EFECTO PARA DETECTAR EL SCROLL ---
+  useEffect(() => {
+    const handleScroll = () => {
+      // Si el usuario ha bajado más de 10px, activamos el estado
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    // Limpiamos el evento al desmontar el componente
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // --- LÓGICA EXISTENTE (INTACTA) ---
+  useEffect(() => {
+    if (debouncedSearchTerm.trim() !== '') {
+      const fetchSuggestions = async () => {
+        const results = await searchRecipeByName(debouncedSearchTerm);
+        setSuggestions(results ? results.slice(0, 5) : []);
+        setShowSuggestions(true);
+      };
+      fetchSuggestions();
+    } else {
+      setShowSuggestions(false);
+    }
+  }, [debouncedSearchTerm]);
+  
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const categoriesData = await getCategories();
-        setApiCategories(categoriesData);
-      } catch (error) {
-        console.error("Error al cargar categorías para el MegaMenu:", error);
-      }
+        const data = await getCategories();
+        setApiCategories(data);
+      } catch (e) { console.error("Error loading categories", e); }
     };
     fetchCategories();
   }, []);
 
-  // Maneja el envío del formulario de búsqueda
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Evita la recarga de la página
+    e.preventDefault();
     if (localSearchTerm.trim()) {
       navigate(`/?search=${localSearchTerm.trim()}`);
-      setShowMegaMenu(false); // Cierra el menú si estaba abierto
+      setShowSuggestions(false);
+      setLocalSearchTerm('');
     }
   };
-
-  // Maneja el clic en una categoría del megamenú
+  
+  const handleSuggestionClick = (recipeId) => {
+    navigate(`/recipe/${recipeId}`);
+    setShowSuggestions(false);
+    setLocalSearchTerm('');
+  };
+  
   const handleCategoryClick = (categoryName) => {
-    navigate(`/?category=${categoryName}`);
-    setShowMegaMenu(false); // Cierra el menú después de la selección
+    navigate(`/?category=${categoryName}#results`);
+    setShowMegaMenu(false);
   };
 
   return (
-    <div className="header-wrapper">
+    // Aplicamos la clase 'scrolled' dinámicamente
+    <div className={`header-wrapper ${isScrolled ? 'scrolled' : ''}`}>
       <header className="main-header">
-        {/* El .container centra el contenido de la barra */}
         <div className="container nav-container">
           <Link to="/" className="nav-logo" onClick={() => setShowMegaMenu(false)}>
-            MiRecetario
+            MyRecipeBook
           </Link>
           
-          <div className="search-wrapper">
-            <form onSubmit={handleSearchSubmit}>
+          <div className="search-wrapper" ref={searchRef}>
+            <form onSubmit={handleSearchSubmit} autoComplete="off">
               <SearchBar searchTerm={localSearchTerm} setSearchTerm={setLocalSearchTerm} />
             </form>
+            {showSuggestions && suggestions.length > 0 && (
+              <SearchSuggestions 
+                suggestions={suggestions} 
+                onSuggestionClick={handleSuggestionClick} 
+              />
+            )}
           </div>
-          
+
           <button className="menu-toggle" onClick={() => setShowMegaMenu(!showMegaMenu)}>
             {showMegaMenu ? <FaTimes /> : <FaBars />}
-            <span>Categorías</span>
+            <span>Categories</span>
           </button>
         </div>
       </header>
 
-      {/* Componente de animación que envuelve el menú */}
       <CSSTransition
         in={showMegaMenu}
         timeout={300}
         classNames="mega-menu"
         unmountOnExit
-        nodeRef={nodeRef}
+        nodeRef={megaMenuRef}
       >
-        <div ref={nodeRef} className="mega-menu-container">
+        <div ref={megaMenuRef} className="mega-menu-container">
           <MegaMenu onCategoryClick={handleCategoryClick} allCategories={apiCategories} />
         </div>
       </CSSTransition>

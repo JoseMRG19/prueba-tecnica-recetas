@@ -9,9 +9,8 @@
   border-radius: 50px;
   border: 1px solid var(--color-border);
   background-color: #f7f7f7;
-  
-  /* --- LÍNEA CLAVE AÑADIDA --- */
-  color: var(--color-text-primary); /* Usa el color de texto principal (gris oscuro) */
+  color: var(--color-text-primary);
+  transition: all 0.2s;
 }
 
 .search-input:focus {
@@ -28,4 +27,19 @@
   top: 50%;
   transform: translateY(-50%);
   opacity: 0.6;
+}
+
+/* --- HACK DEFINITIVO PARA EL AUTOCOMPLETADO DE CHROME --- */
+/* Esta pseudo-clase se aplica cuando el navegador rellena el campo */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+    /* Forzamos el color del texto a ser el nuestro */
+    -webkit-text-fill-color: var(--color-text-primary) !important;
+    /* Forzamos el fondo a ser el nuestro */
+    -webkit-box-shadow: 0 0 0 30px #f7f7f7 inset !important;
+    box-shadow: 0 0 0 30px #f7f7f7 inset !important;
+    /* También podemos forzar la fuente si es necesario */
+    font-family: var(--font-family) !important;
 }

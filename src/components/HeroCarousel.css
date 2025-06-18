@@ -41,7 +41,7 @@
 
 /* Contenido animado y con blur */
 .legend-content {
-  background-color: rgba(247, 247, 247, 0.9);
+  background-color: #F1F2F2;
   backdrop-filter: blur(5px);
   padding: 2.5rem;
   border-radius: var(--border-radius);

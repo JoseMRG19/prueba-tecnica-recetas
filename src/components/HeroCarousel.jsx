@@ -38,9 +38,9 @@ const HeroCarousel = () => {
             <div className="legend-overlay">
               <div className="legend-content">
                 <h2>{recipe.strMeal}</h2>
-                <p>Una deliciosa receta para sorprender.</p>
+                <p>A delicious recipe to impress.</p>
                 <Link to={`/recipe/${recipe.idMeal}`} className="legend-button">
-                  Ver Receta
+                  View Recipe
                 </Link>
               </div>
             </div>

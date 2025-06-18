@@ -15,83 +15,50 @@
   
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 5px 15px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.12); /* Nuevo para RecipeDetailPage */
   --border-radius: 12px;
 }
 
-*, *::before, *::after { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+}
+
+*, *::before, *::after { 
+  box-sizing: border-box; 
+}
 
 body {
   margin: 0;
   font-family: var(--font-family);
-  background-color: #f7f7f7; /* <-- CAMBIO: Un gris muy claro y elegante */
+  background-color: var(--color-background);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
 }
 
-#root {
-  max-width: 1280px; /* Ancho máximo para el contenedor principal de la app */
-  margin: 0 auto;    /* Centra #root horizontalmente en el body */
-  padding: 2rem;     /* Espacio interno general de #root */
-  text-align: center; /* Alinea el texto del root, puede ser sobrescrito por otros componentes */
-}
-
-/* Estilos de utilidades para centrar el contenido de la página */
 .container {
+  width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 0 1.5rem; /* Padding horizontal para evitar que el contenido toque los bordes */
+  padding: 0 1.5rem;
 }
 
-/* Estilos de tipografía básicos */
-h1, h2, h3, h4, h5, h6 {
-  color: var(--color-text-primary);
-  font-weight: 700;
-  line-height: 1.2;
+.recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  width: 100%;
 }
 
-p {
-  color: var(--color-text-primary);
-  line-height: 1.6;
+@media (max-width: 992px) {
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
+@media (max-width: 640px) {
+  .recipe-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-a:hover {
-  color: var(--color-primary-dark);
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Pequeños ajustes para elementos de formulario si los usas */
-input, button, select, textarea {
-  font-family: var(--font-family);
-}
-
-button {
-  cursor: pointer;
-  border: none;
-  background-color: var(--color-primary);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: var(--border-radius);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-button:hover {
-  background-color: var(--color-primary-dark);
-  box-shadow: var(--shadow-sm);
-}
-
-button:disabled {
-  background-color: var(--color-text-secondary);
-  cursor: not-allowed;
-}
+/* --- SECCIÓN DE NPROGRESS ELIMINADA --- */
+/* Ya no hay estilos para #nprogress aquí */

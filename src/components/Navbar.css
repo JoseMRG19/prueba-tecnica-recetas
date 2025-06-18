@@ -1,49 +1,60 @@
-/* Contenedor principal que permite que la barra sea "pegajosa" (sticky) */
+/* Wrapper principal que se pega arriba */
 .header-wrapper {
-  position: sticky;
+  position: fixed; /* Lo fijamos en la parte superior de la ventana */
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 1000;
-  width: 100%; /* Asegura que ocupe todo el ancho */
+  /* La transición se aplica aquí para que el cambio de color de fondo sea suave */
+  transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-/* La barra de navegación principal con el fondo verde */
-.main-header {
+/* --- ESTADO "SCROLLED" --- */
+/* Cuando el wrapper tiene la clase 'scrolled', le ponemos el fondo verde */
+.header-wrapper.scrolled {
   background-color: var(--color-primary);
-  padding: 1rem 0;
-  color: white;
+  box-shadow: var(--shadow-md);
 }
 
-/* El contenedor interno que centra el contenido de la barra */
+/* Barra de navegación principal */
+.main-header {
+  /* Ya no necesita el fondo, lo controla el wrapper */
+  padding: 1rem 0;
+  color: white; /* El texto por defecto siempre será blanco */
+}
+
+/* Contenido centrado */
 .nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1.5rem;
   width: 100%;
-  max-width: 1100px; /* Coincide con el .container global */
-  margin: 0 auto; /* Centra este contenedor */
-  padding: 0 1rem; /* Espaciado lateral */
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
-/* Logo "MiRecetario" */
+/* Logo */
 .nav-logo {
   font-size: 1.6rem;
   font-weight: 800;
   color: white;
   text-decoration: none;
-  flex-shrink: 0; /* Evita que se encoja si no hay espacio */
+  flex-shrink: 0;
 }
 
-/* Contenedor de la barra de búsqueda */
+/* Barra de búsqueda */
 .search-wrapper {
   width: 100%;
+  position: relative; 
   max-width: 450px;
 }
 
-/* Botón de "Categorías" */
+/* Botón de categorías */
 .menu-toggle {
-  background-color: white;
-  border: 1px solid white;
+  background-color: rgba(255, 255, 255, 0.9);
+  border: 1px solid transparent;
   color: var(--color-primary);
   font-size: 0.9rem;
   font-weight: 700;
@@ -56,45 +67,26 @@
   transition: all 0.2s ease;
   flex-shrink: 0;
 }
-
 .menu-toggle:hover {
-  background-color: #f8f8f8;
+  background-color: white;
 }
-
 .menu-toggle svg {
   font-size: 1.1rem;
 }
 
-
-/* --- ESTILOS PARA LA ANIMACIÓN DEL MEGAMENÚ --- */
-
-/* El contenedor que posiciona el menú desplegable */
-.mega-menu-container {
+/* Estilos del Megamenú (sin cambios) */
+.mega-menu-container, .mega-menu-enter, .mega-menu-enter-active, .mega-menu-exit, .mega-menu-exit-active {
+  /* ... tus estilos de animación y posicionamiento del megamenú se quedan aquí ... */
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
-  padding: 0 1rem; /* Asegura que el menú no se pegue a los bordes en pantallas pequeñas */
+  padding: 0 1rem;
 }
 
-/* Nombres de clase para la animación con CSSTransition */
-.mega-menu-enter {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-.mega-menu-enter-active {
-  opacity: 1;
-  transform: translateY(0);
-  transition: opacity 300ms ease-out, transform 300ms ease-out;
-}
-.mega-menu-exit {
-  opacity: 1;
-  transform: translateY(0);
-}
-.mega-menu-exit-active {
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 300ms ease-in, transform 300ms ease-in;
-}
+.mega-menu-enter { opacity: 0; transform: translateY(-10px); }
+.mega-menu-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }
+.mega-menu-exit { opacity: 1; transform: translateY(0); }
+.mega-menu-exit-active { opacity: 0; transform: translateY(-10px); transition: opacity 300ms, transform 300ms; }

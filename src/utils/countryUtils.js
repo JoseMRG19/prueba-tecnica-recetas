@@ -1,5 +1,8 @@
-// Mapeo de áreas de TheMealDB a códigos de país ISO 3166-1 alfa-2
-const areaToCountryCode = {
+// src/utils/countryUtils.js
+
+// Esta es la ÚNICA declaración de la constante.
+// La palabra 'export' al principio hace que esté disponible para otros archivos.
+export const areaToCountryCode = {
   "American": "US",
   "British": "GB",
   "Canadian": "CA",
@@ -27,19 +30,13 @@ const areaToCountryCode = {
   "Tunisian": "TN",
   "Turkish": "TR",
   "Vietnamese": "VN",
-  "Unknown": "AQ", // Usamos la Antártida para "desconocido"
 };
 
-/**
- * Obtiene la URL de la bandera de un país a partir del área de la receta.
- * @param {string} area - El área de la receta (ej. "Italian").
- * @returns {string|null} - La URL de la imagen de la bandera o null si no se encuentra.
- */
+// Esta función se queda exactamente igual.
 export const getFlagUrl = (area) => {
   const countryCode = areaToCountryCode[area];
   if (!countryCode) {
-    return null; // Si no tenemos el código, no mostramos bandera
+    return null;
   }
-  // Usamos la API de flagcdn.com, que es gratuita y rápida.
   return `https://flagcdn.com/w40/${countryCode.toLowerCase()}.png`;
 };

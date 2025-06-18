@@ -11,6 +11,7 @@ const categoryIcons = {
   Vegetarian: <FaLeaf />,
 };
 
+// Categorías principales que aparecerán como botones
 const mainCategories = ["All", "Beef", "Chicken", "Dessert", "Seafood", "Vegetarian"];
 
 const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
@@ -24,7 +25,7 @@ const CategoryFilter = ({ selectedCategory, onCategoryChange }) => {
           onClick={() => onCategoryChange(categoryName)}
         >
           {categoryIcons[categoryName]}
-          <span>{categoryName === 'All' ? 'Todas' : categoryName}</span>
+          <span>{categoryName === 'All' ? 'All' : categoryName}</span>
         </button>
       ))}
     </div>

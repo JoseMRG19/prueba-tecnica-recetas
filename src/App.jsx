@@ -1,13 +1,28 @@
 import React from 'react';
-import { createBrowserRouter, RouterProvider, Outlet, useNavigate } from 'react-router-dom';
+import { 
+  createBrowserRouter, 
+  RouterProvider, 
+  Outlet, 
+  useNavigate 
+} from 'react-router-dom';
+
+// Importación de Componentes de Layout y Páginas
+import Navbar from './components/Navbar';
+import ScrollProgressBar from './components/ScrollProgressBar'; // <-- CAMBIO: Importamos el nuevo componente
 import HomePage from './pages/HomePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-import Navbar from './components/Navbar';
+
+// Importación de Estilos Globales
 import './styles/globals.css';
 
+/**
+ * AppLayout es el componente principal que define la estructura visual de toda la aplicación.
+ * Contiene elementos persistentes como la barra de navegación y el indicador de progreso de scroll.
+ */
 const AppLayout = () => {
   const navigate = useNavigate();
 
+  // Función que se pasa a la Navbar para manejar el envío de una búsqueda.
   const handleSearchSubmit = (searchTerm) => {
     if (searchTerm.trim()) {
       navigate(`/?search=${searchTerm.trim()}`);
@@ -18,22 +33,33 @@ const AppLayout = () => {
 
   return (
     <>
-      {/* La Navbar ahora está en el nivel superior, sin contenedores que la limiten */}
+      {/* --- CAMBIO --- */}
+      {/* Reemplazamos NavigationLoader por ScrollProgressBar */}
+      <ScrollProgressBar />
+      
       <Navbar onSearchSubmit={handleSearchSubmit} />
+
       <main>
-        {/* El Outlet renderizará las páginas, que tendrán su propio .container */}
+        {/* Outlet renderizará la página activa */}
         <Outlet />
       </main>
     </>
   );
 };
 
+// Configuración del enrutador de la aplicación.
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
     children: [
-      { path: "/", element: <HomePage /> },
-      { path: "/recipe/:recipeId", element: <RecipeDetailPage /> },
+      { 
+        path: "/", 
+        element: <HomePage /> 
+      },
+      { 
+        path: "/recipe/:recipeId", 
+        element: <RecipeDetailPage /> 
+      },
     ],
   },
 ]);

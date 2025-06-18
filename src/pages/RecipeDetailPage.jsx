@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-// Importaciones de lógica y componentes
+// Logic and component imports
 import { getRecipeById } from '../api/theMealDB';
-import { getFlagUrl } from '../utils/countryUtils'; // Importamos la nueva utilidad
+import { getFlagUrl } from '../utils/countryUtils';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 
-// Importación de estilos
+// Style import
 import './RecipeDetailPage.css';
 
 const RecipeDetailPage = () => {
@@ -18,29 +18,29 @@ const RecipeDetailPage = () => {
 
   useEffect(() => {
     const fetchRecipeDetails = async () => {
-      // Reiniciamos el estado en cada nueva búsqueda
+      // Reset state on each new search
       setLoading(true);
       setError(null);
       setRecipe(null);
-      
+
       try {
         const data = await getRecipeById(recipeId);
         if (data) {
           setRecipe(data);
         } else {
-          setError("No se encontró la receta que estás buscando.");
+          setError("The recipe you're looking for was not found.");
         }
       } catch (err) {
-        setError("Error al cargar los detalles de la receta.");
+        setError("An error occurred while loading the recipe details.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchRecipeDetails();
-  }, [recipeId]); // El efecto se ejecuta cada vez que el ID de la receta en la URL cambia
+  }, [recipeId]);
 
-  // Función para procesar la lista de ingredientes desde el objeto de la receta
+  // Function to extract the ingredient list from the recipe object
   const getIngredients = (recipeData) => {
     const ingredients = [];
     for (let i = 1; i <= 20; i++) {
@@ -53,35 +53,35 @@ const RecipeDetailPage = () => {
     return ingredients;
   };
 
-  // --- Renderizado Condicional ---
+  // --- Conditional Rendering ---
   if (loading) return <div className="page-center"><LoadingSpinner /></div>;
   if (error) return <div className="page-center"><ErrorMessage message={error} /></div>;
-  if (!recipe) return <div className="page-center"><p>Receta no disponible.</p></div>;
+  if (!recipe) return <div className="page-center"><p>Recipe not available.</p></div>;
 
-  // --- Preparación de Datos para Renderizar ---
+  // --- Data Preparation ---
   const ingredients = getIngredients(recipe);
-  const flagUrl = getFlagUrl(recipe.strArea); // Obtenemos la URL de la bandera
+  const flagUrl = getFlagUrl(recipe.strArea);
   const youtubeVideoId = recipe.strYoutube ? recipe.strYoutube.split('v=')[1]?.split('&')[0] : null;
 
   return (
     <div className="container recipe-detail-page">
-      <Link to="/" className="back-link">← Volver a la búsqueda</Link>
+      <Link to="/" className="back-link">← Back to search</Link>
 
       <header className="recipe-header">
         <h1>{recipe.strMeal}</h1>
         <div className="meta-info">
           {recipe.strCategory && <span className="meta-tag">{recipe.strCategory}</span>}
-          
-          {/* Lógica para mostrar la bandera junto al área */}
+
+          {/* Show flag next to the area */}
           {recipe.strArea && (
             <span className="meta-tag area-tag">
-              {flagUrl && <img src={flagUrl} alt={`Bandera de ${recipe.strArea}`} className="flag-icon" />}
+              {flagUrl && <img src={flagUrl} alt={`Flag of ${recipe.strArea}`} className="flag-icon" />}
               {recipe.strArea}
             </span>
           )}
         </div>
       </header>
-      
+
       <div className="recipe-main-content">
         <div className="recipe-media">
           {youtubeVideoId ? (
@@ -98,9 +98,9 @@ const RecipeDetailPage = () => {
             <img src={recipe.strMealThumb.replace('/preview', '')} alt={recipe.strMeal} className="recipe-image" />
           )}
         </div>
-        
+
         <div className="recipe-instructions-container">
-          <h2>Ingredientes</h2>
+          <h2>Ingredients</h2>
           <ul className="ingredients-list">
             {ingredients.map((ing, index) => (
               <li key={index}>
@@ -112,13 +112,13 @@ const RecipeDetailPage = () => {
       </div>
 
       <div className="instructions-section">
-        <h2>Instrucciones</h2>
+        <h2>Instructions</h2>
         <p className="instructions-text">{recipe.strInstructions}</p>
       </div>
 
       {recipe.strSource && (
         <p className="recipe-source">
-          Fuente: <a href={recipe.strSource} target="_blank" rel="noopener noreferrer">{recipe.strSource}</a>
+          Source: <a href={recipe.strSource} target="_blank" rel="noopener noreferrer">{recipe.strSource}</a>
         </p>
       )}
     </div>

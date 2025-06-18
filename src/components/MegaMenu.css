@@ -1,23 +1,14 @@
-/* src/components/MegaMenu.css */
-
 .mega-menu-content {
   background-color: white;
   width: 100%;
   max-width: 1100px;
   margin-top: 0.5rem;
-  
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--color-border);
-  
   padding: 2.5rem 3rem;
-  
-  /* --- CAMBIO AQUÍ --- */
-  /* En lugar de un grid complejo, usamos un layout más simple */
-  display: block; /* O puedes quitar la propiedad 'display' por completo */
+  display: block;
 }
-
-/* El resto del CSS (.menu-column, etc.) puede quedar igual o lo puedes simplificar así: */
 
 .menu-column h4 {
   font-size: 0.8rem;
@@ -34,7 +25,6 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  /* Opcional: crea columnas dentro de la lista si hay muchas categorías */
   column-count: 3;
   column-gap: 2rem;
 }
@@ -45,7 +35,7 @@
   text-decoration: none;
   color: var(--color-text-primary);
   font-weight: 500;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
 }
 
 .menu-column ul li a:hover {

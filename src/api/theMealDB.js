@@ -1,5 +1,4 @@
-// --- CORRECCIÓN CLAVE ---
-// La URL base ahora debe coincidir con el prefijo que definimos en el proxy de Vite.
+// Usamos la nueva ruta del proxy
 const BASE_URL = "/api-proxy/json/v1/1";
 
 /**
@@ -12,7 +11,7 @@ const fetchFromApi = async (endpoint) => {
       throw new Error(`Error de red o del servidor: ${response.status}`);
     }
     const data = await response.json();
-    return data; // Devolvemos el objeto completo para que cada función lo procese
+    return data;
   } catch (error) {
     console.error(`Error en fetchFromApi para ${endpoint}:`, error);
     throw error;
@@ -23,12 +22,17 @@ const fetchFromApi = async (endpoint) => {
 
 export const getCategories = async () => {
   const data = await fetchFromApi('categories.php');
-  // La respuesta real es { categories: [...] }, así que la extraemos aquí.
   return data.categories || [];
 };
 
 export const getRecipesByCategory = async (categoryName) => {
   const data = await fetchFromApi(`filter.php?c=${categoryName}`);
+  return data.meals || [];
+};
+
+// --- FUNCIÓN AÑADIDA Y CORREGIDA ---
+export const getRecipesByArea = async (areaName) => {
+  const data = await fetchFromApi(`filter.php?a=${areaName}`);
   return data.meals || [];
 };
 
@@ -44,13 +48,11 @@ export const getRecipeById = async (id) => {
 
 export const getFeaturedRecipes = async () => {
   const featuredCategories = ['Seafood', 'Chicken', 'Beef', 'Pasta', 'Dessert', 'Vegetarian'];
-  
-  // Cada llamada ahora usa la función genérica que pasa por el proxy
   const promises = featuredCategories.map(category => getRecipesByCategory(category));
   
   try {
     const results = await Promise.all(promises);
-    const allMeals = results.flatMap(result => result || []); // Aplanamos los arrays
+    const allMeals = results.flatMap(result => result || []);
     return allMeals.sort(() => 0.5 - Math.random()).slice(0, 24);
   } catch (error) {
     console.error("Error al obtener las recetas destacadas:", error);
@@ -60,7 +62,6 @@ export const getFeaturedRecipes = async () => {
 
 export const getFullRecipesDetails = async (basicRecipes) => {
   if (!basicRecipes || basicRecipes.length === 0) return [];
-  
   const detailPromises = basicRecipes.map(recipe => getRecipeById(recipe.idMeal));
   
   try {

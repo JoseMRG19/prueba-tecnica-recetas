@@ -5,7 +5,7 @@ import './ErrorMessage.css';
 
 const ErrorMessage = ({ message }) => {
   // Si no nos pasan un mensaje, mostramos uno por defecto.
-  const displayMessage = message || "Ha ocurrido un error inesperado.";
+  const displayMessage = message || "An unexpected error has occurred.";
 
   return (
     <div className="error-container">

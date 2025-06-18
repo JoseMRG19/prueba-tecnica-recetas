@@ -10,7 +10,12 @@ const MegaMenu = ({ onCategoryClick, allCategories }) => {
         <ul>
           {Array.isArray(allCategories) && allCategories.map(cat => (
             <li key={cat.strCategory}>
-              <Link to={`/?category=${cat.strCategory}`} onClick={() => onCategoryClick(cat.strCategory)}>
+              {/* --- CORRECCIÓN CLAVE AQUÍ --- */}
+              {/* El 'to' ahora incluye el ancla #results */}
+              <Link
+                to={`/?category=${cat.strCategory}#results`}
+                onClick={() => onCategoryClick(cat.strCategory)}
+              >
                 {cat.strCategory}
               </Link>
             </li>

@@ -1,43 +1,60 @@
-/* Contenedor principal de la página con padding */
+/* src/pages/HomePage.css */
+
 .page-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra los elementos flexibles como SearchBar */
-  padding-top: 3rem;
-  padding-bottom: 4rem;
+  /* Añadimos padding a los lados para que el contenido tenga un respiro */
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
-/* Título principal de la página */
-.main-title {
+.section-title {
   text-align: center;
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: var(--color-text-primary);
-  margin-bottom: 0.5rem;
-}
-
-.main-subtitle {
-  text-align: center;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
   color: var(--color-text-secondary);
-  margin-bottom: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 2rem 0;
+  position: relative;
+  padding-bottom: 1rem;
 }
 
-/* Estilos para el grid de recetas */
-.recipe-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 2rem;
-  width: 100%; /* Ocupa todo el ancho disponible en el contenedor */
-  max-width: 1100px; /* Asegura que no se extienda demasiado */
-  margin-top: 3rem; /* Espacio superior para separarlo de los filtros/búsqueda */
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background-color: var(--color-primary);
 }
 
-/* Mensaje cuando no hay resultados */
+.explore-section {
+  padding: 4rem 0;
+}
+
+.filter-section {
+  background-color: var(--color-surface);
+  padding: 4rem 0;
+  margin: 3rem 0;
+}
+
+.results-section {
+  padding: 2rem 0;
+}
+
+.results-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
 .no-results-message {
   text-align: center;
+  padding: 3rem;
   color: var(--color-text-secondary);
-  font-size: 1.2rem;
-  margin-top: 2rem;
-  grid-column: 1 / -1; /* Para que el mensaje ocupe todo el ancho del grid */
+}
+html {
+  scroll-behavior: smooth;
 }
